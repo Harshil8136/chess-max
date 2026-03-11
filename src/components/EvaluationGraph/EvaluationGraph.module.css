@@ -1,18 +1,17 @@
 .container {
     width: 100%;
     margin-top: 1rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: #262421;
+    border: 1px solid #3b3834;
     border-radius: var(--radius);
-    padding: 1rem;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    overflow: hidden;
 }
 
 .compactContainer {
     margin-top: 0;
-    padding: 0;
     border: none;
     background: transparent;
 }
@@ -21,40 +20,34 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0.75rem 1rem 0 1rem;
 }
 
 .title {
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: white;
 }
 
 .badge {
-    font-family: monospace;
-    font-weight: bold;
-    font-size: 1rem;
-    color: var(--text-primary);
-    background: rgba(0,0,0,0.1);
-    padding: 2px 6px;
-    border-radius: 4px;
+    display: none; /* Hide the badge to match the reference image exactly which doesn't have an eval badge here */
+    font-variant-numeric: tabular-nums;
 }
 
 .graphWrapper {
     width: 100%;
-    height: 120px;
+    height: 100px;
     position: relative;
     cursor: pointer;
-    border-radius: 4px;
     overflow: hidden;
-    background: rgba(0,0,0,0.05);
+    margin-top: 0.5rem;
 }
 
 .compactGraph {
     height: 60px;
     border-radius: var(--radius-md);
     pointer-events: none;
+    margin-top: 0;
 }
 
 .svg {
@@ -64,32 +57,31 @@
 }
 
 .zeroLine {
-    stroke: var(--border);
-    stroke-width: 1.5;
-    stroke-dasharray: 4 4;
+    stroke: #3b3834;
+    stroke-width: 1;
 }
 
 .areaWhite {
-    fill: rgba(255, 255, 255, 0.6);
+    fill: transparent; /* Removing the background fill to match the sleek line-only look of the reference */
 }
 
 .areaBlack {
-    fill: rgba(0, 0, 0, 0.4);
+    fill: transparent;
 }
 
 .line {
     fill: none;
-    stroke: var(--text-primary);
-    stroke-width: 2.5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+    stroke: #e5e5e5; /* Very light gray/white for the line */
+    stroke-width: 2.5; /* Pro Max: Increased for better visibility */
+    stroke-linecap: square;
+    stroke-linejoin: miter; /* Sharper edges on the graph like the reference */
 }
 
 .marker {
-    fill: var(--text-primary);
-    stroke: var(--surface);
+    fill: white;
+    stroke: #262421;
     stroke-width: 2;
-    filter: drop-shadow(0 0 2px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 0 4px rgba(0,0,0,0.8));
 }
 
 .loadingOverlay {
@@ -99,7 +91,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(0,0,0,0.4);
+    background: rgba(38, 36, 33, 0.7);
     backdrop-filter: blur(2px);
     z-index: 10;
 }
@@ -107,7 +99,7 @@
 .progressBarWrapper {
     width: 80%;
     height: 4px;
-    background: var(--border);
+    background: #3b3834;
     border-radius: 2px;
     overflow: hidden;
     margin-bottom: 0.5rem;
@@ -115,18 +107,15 @@
 
 .progressBar {
     height: 100%;
-    background: var(--text-primary);
+    background: #e5e5e5;
 }
 
 .progressText {
     font-size: 0.8rem;
-    color: var(--text-primary);
+    color: #e5e5e5;
     font-weight: 600;
 }
 
 .tickLabels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    color: var(--text-muted);
+    display: none; /* Removed to match the super clean look of the reference */
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { X, Upload, Hash, FileText } from 'lucide-react';
 import { useGame } from '@/contexts/GameContext';
 import { Chess } from 'chess.js';

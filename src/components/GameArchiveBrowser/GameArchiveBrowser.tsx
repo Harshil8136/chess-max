@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { X, Search, Trash2, RotateCcw } from 'lucide-react';
 import { useGame } from '@/contexts/GameContext';
 import styles from './GameArchiveBrowser.module.css';

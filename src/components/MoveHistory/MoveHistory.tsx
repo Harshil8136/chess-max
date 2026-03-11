@@ -92,7 +92,7 @@ export default React.memo(function MoveHistory({
                             <span className={styles.moveNumber}>{pair.number}.</span>
                             {pair.white && (
                                 <span
-                                    className={getMoveClass(pair.white, pair.whiteIndex)}
+                                    className={`${getMoveClass(pair.white, pair.whiteIndex)} active:scale-[0.97] transition-transform origin-center`}
                                     onClick={() => onGoToMove(pair.whiteIndex)}
                                 >
                                     {pair.white.san}
@@ -101,7 +101,7 @@ export default React.memo(function MoveHistory({
                             )}
                             {pair.black && (
                                 <span
-                                    className={getMoveClass(pair.black, pair.blackIndex)}
+                                    className={`${getMoveClass(pair.black, pair.blackIndex)} active:scale-[0.97] transition-transform origin-center`}
                                     onClick={() => onGoToMove(pair.blackIndex)}
                                 >
                                     {pair.black.san}
@@ -114,10 +114,10 @@ export default React.memo(function MoveHistory({
             </div>
 
             <div className={styles.controls}>
-                <button className="btn btn-icon" onClick={onGoToFirst} title="First move" aria-label="First move"><ChevronsLeft size={18} /></button>
-                <button className="btn btn-icon" onClick={onGoToPrev} title="Previous move" aria-label="Previous move"><ChevronLeft size={18} /></button>
-                <button className="btn btn-icon" onClick={onGoToNext} title="Next move" aria-label="Next move"><ChevronRight size={18} /></button>
-                <button className="btn btn-icon" onClick={onGoToLast} title="Last move" aria-label="Last move"><ChevronsRight size={18} /></button>
+                <button className="btn btn-icon min-w-[44px] min-h-[44px] active:scale-[0.97] transition-transform" onClick={onGoToFirst} title="First move" aria-label="First move"><ChevronsLeft size={20} /></button>
+                <button className="btn btn-icon min-w-[44px] min-h-[44px] active:scale-[0.97] transition-transform" onClick={onGoToPrev} title="Previous move" aria-label="Previous move"><ChevronLeft size={20} /></button>
+                <button className="btn btn-icon min-w-[44px] min-h-[44px] active:scale-[0.97] transition-transform" onClick={onGoToNext} title="Next move" aria-label="Next move"><ChevronRight size={20} /></button>
+                <button className="btn btn-icon min-w-[44px] min-h-[44px] active:scale-[0.97] transition-transform" onClick={onGoToLast} title="Last move" aria-label="Last move"><ChevronsRight size={20} /></button>
             </div>
         </div>
     );

@@ -1,20 +1,19 @@
 .panel {
-    background: var(--bg-primary);
-    border-radius: var(--radius-lg);
+    background: transparent;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     height: 100%;
     min-height: 0;
-    box-shadow: var(--shadow-md);
 }
 
 .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--space-md) var(--space-lg);
-    border-bottom: 1px solid var(--border-color);
+    padding: 12px 16px;
+    background: #1e1d1b;
+    border-bottom: 1px solid #141311;
 }
 
 .openingName {
@@ -34,17 +33,22 @@
 .moves {
     flex: 1;
     overflow-y: auto;
-    padding: var(--space-sm);
+    background: #262421;
 }
 
 .moveRow {
     display: flex;
     align-items: center;
-    border-radius: var(--radius-sm);
+    padding: 4px 16px;
+    background: #262421;
+}
+
+.moveRow:nth-child(even) {
+    background: #2a2926;
 }
 
 .moveRow:hover {
-    background: rgba(255, 255, 255, 0.03);
+    background: #33312e;
 }
 
 .moveNumber {
@@ -54,28 +58,32 @@
     text-align: center;
     flex-shrink: 0;
     font-weight: 500;
+    font-variant-numeric: tabular-nums;
 }
 
 .move {
     flex: 1;
-    padding: 4px 8px;
+    padding: 6px 8px;
     font-size: 0.85rem;
     font-weight: 500;
     color: var(--text-primary);
     cursor: pointer;
-    border-radius: var(--radius-sm);
-    transition: background var(--transition-fast);
+    border-radius: 6px;
+    transition: all var(--transition-fast);
     text-align: center;
+    margin: 0 4px;
 }
 
 .move:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .moveActive {
-    background: var(--accent-green) !important;
-    color: var(--text-on-accent);
+    background: var(--bg-surface) !important;
+    color: var(--text-primary);
     font-weight: 700;
+    border-radius: 4px;
+    border-bottom: 2px solid var(--accent-green);
 }
 
 .moveCheck {
@@ -99,10 +107,12 @@
 .controls {
     display: flex;
     align-items: center;
-    gap: var(--space-xs);
+    gap: var(--space-sm);
     padding: var(--space-sm) var(--space-md);
-    border-top: 1px solid var(--border-color);
+    background: rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
     justify-content: center;
+    min-height: 48px; /* Pro Max: Ensure sufficiently large touch area for the control bar */
 }
 .badge { font-size: 0.7rem; font-weight: bold; margin-left: 4px; padding: 1px 4px; border-radius: 4px; color: white; display: inline-block; vertical-align: middle; line-height: 1; }
 .badgeBlunder { background-color: #f73131; }

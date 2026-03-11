@@ -174,7 +174,18 @@ export default React.memo(function EvaluationGraph({
                             cx={getX(displayIndex)} 
                             cy={getY(displayData.y)} 
                             r="5" 
+                            className={`${styles.marker} transition-all duration-150`} 
+                        />
+                    )}
+                    
+                    {/* Hover marker for tooltip contrast */}
+                    {!compact && hoverIndex !== null && hoverIndex !== displayIndex && (
+                        <circle 
+                            cx={getX(hoverIndex)} 
+                            cy={getY(dataPoints[hoverIndex]?.y || 0)} 
+                            r="4" 
                             className={styles.marker} 
+                            style={{ opacity: 0.6 }}
                         />
                     )}
                 </svg>

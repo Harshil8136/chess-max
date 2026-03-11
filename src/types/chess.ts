@@ -1,4 +1,4 @@
-import { Chess, Square, Move, Color, PieceSymbol } from 'chess.js';
+import { PieceSymbol } from 'chess.js';
 
 export type PlayerColor = 'w' | 'b';
 
@@ -35,16 +35,8 @@ export type TimeControl = {
     increment: number; // seconds
 };
 
-export type GameSettings = {
-    playerColor: PlayerColor | 'random';
-    eloLevel: EloLevel;
-    timeControl: TimeControl;
-};
 
-export type MoveWithEval = Move & {
-    evaluation?: number;
-    classification?: MoveClassification;
-};
+
 
 export type MoveClassification =
     | 'brilliant'
@@ -64,22 +56,3 @@ export type CapturedPieces = {
 
 export type EngineState = 'idle' | 'loading' | 'ready' | 'thinking';
 
-export type EngineMessage = {
-    type: 'init' | 'position' | 'go' | 'stop' | 'eval' | 'setOption' | 'quit';
-    fen?: string;
-    depth?: number;
-    moveTime?: number;
-    skillLevel?: number;
-    elo?: number;
-};
-
-export type EngineResponse = {
-    type: 'ready' | 'bestmove' | 'info' | 'error';
-    bestMove?: string;
-    evaluation?: number;
-    depth?: number;
-    mate?: number;
-    pv?: string;
-};
-
-export type { Chess, Square, Move, Color, PieceSymbol };

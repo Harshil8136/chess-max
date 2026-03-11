@@ -2,8 +2,9 @@
 
 import React from 'react';
 import { PieceSymbol } from 'chess.js';
+import { motion, AnimatePresence } from 'framer-motion';
 import styles from './PlayerBar.module.css';
-import { PIECE_VALUES } from '@/lib/engine';
+
 
 const PIECE_UNICODE: Record<string, Record<string, string>> = {
     w: { p: '♙', n: '♘', b: '♗', r: '♖', q: '♕', k: '♔' },
@@ -86,18 +87,35 @@ export default React.memo(function PlayerBar({
 
                 {/* Captured Pieces & Advantage */}
                 <div className={styles.materialRow}>
-                    {capturedPieces.length > 0 && (
-                        <span className={styles.capturedPieces}>
-                            {capturedPieces.map((piece, i) => (
-                                <span key={i} className={styles.capturedPiece}>
-                                    {PIECE_UNICODE[capturedColor]?.[piece] || piece}
-                                </span>
-                            ))}
-                        </span>
-                    )}
-                    {materialAdvantage > 0 && (
-                        <span className={styles.materialAdvantage}>{materialDisplay}</span>
-                    )}
+                    <AnimatePresence>
+                        {capturedPieces.length > 0 && (
+                            <motion.span layout key="captured-pieces" className={styles.capturedPieces}>
+                                {capturedPieces.map((piece, i) => (
+                                    <motion.span 
+                                        key={`${i}-${piece}`} 
+                                        className={styles.capturedPiece}
+                                        initial={{ opacity: 0, scale: 0.5, x: -10 }}
+                                        animate={{ opacity: 1, scale: 1, x: 0 }}
+                                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                                    >
+                                        {PIECE_UNICODE[capturedColor]?.[piece] || piece}
+                                    </motion.span>
+                                ))}
+                            </motion.span>
+                        )}
+                        {materialAdvantage > 0 && (
+                            <motion.span 
+                                layout
+                                key="material-advantage"
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ type: "spring", stiffness: 300 }}
+                                className={styles.materialAdvantage}
+                            >
+                                {materialDisplay}
+                            </motion.span>
+                        )}
+                    </AnimatePresence>
                 </div>
             </div>
 

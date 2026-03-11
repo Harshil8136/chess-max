@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback, MutableRefObject } from 'react';
+import { useEffect, useRef, MutableRefObject } from 'react';
 import { PlayerColor, EloLevel, TimeControl, GameStatus } from '@/types/chess';
 import { UseClockReturn } from '@/hooks/useClock';
 

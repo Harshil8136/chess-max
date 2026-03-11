@@ -30,14 +30,7 @@ export function useGameArchive() {
         }
     }, []);
 
-    const saveArchivedGames = (games: ArchivedGame[]) => {
-        setArchivedGames(games);
-        try {
-            localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify(games));
-        } catch {
-            // Ignore quota errors
-        }
-    };
+
 
     const saveGame = useCallback((game: Omit<ArchivedGame, 'id' | 'date'>) => {
         // Prevent saving empty games

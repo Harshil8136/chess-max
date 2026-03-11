@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { X, Palette, Volume2, BarChart3, Moon, Sun, Monitor, AlignJustify } from 'lucide-react';
+import { X, Palette, Volume2, BarChart3, Moon, Sun, Monitor } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
 import { useGame } from '@/contexts/GameContext';
 import { PIECE_SETS } from '@/hooks/useSettings';

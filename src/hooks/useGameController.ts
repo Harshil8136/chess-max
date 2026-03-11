@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { PlayerColor, EloLevel, TimeControl, GameStatus, GameMode } from '@/types/chess';
+import { PlayerColor, EloLevel, TimeControl, GameMode } from '@/types/chess';
 import { useChessGame } from './useChessGame';
 import { useStockfish } from './useStockfish';
 import { useClock } from './useClock';

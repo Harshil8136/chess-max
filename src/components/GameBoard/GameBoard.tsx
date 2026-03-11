@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState, useEffect } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { motion, PanInfo } from 'framer-motion';
 import { Square } from 'chess.js';
 import { SettingsState } from '@/hooks/useSettings';
@@ -35,17 +35,18 @@ interface GameBoardProps {
     onSquareClick: (args: SquareHandlerArgs) => void;
     boardMatrix: any[][];
     settings: SettingsState;
+    moveClassification?: string | null;
 }
 
 const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 const RANKS = ['8', '7', '6', '5', '4', '3', '2', '1'];
 
 export default React.memo(function GameBoard({
-    fen,
+    fen: _fen,
     boardFlipped,
     appState,
     gameStatus,
-    isPlayerTurn,
+    isPlayerTurn: _isPlayerTurn,
     historyIndex,
     historyLength,
     lastMove,
@@ -59,6 +60,7 @@ export default React.memo(function GameBoard({
     onSquareClick,
     boardMatrix,
     settings,
+    moveClassification,
 }: GameBoardProps) {
     const boardRef = useRef<HTMLDivElement>(null);
 
@@ -104,7 +106,7 @@ export default React.memo(function GameBoard({
     }, [boardFlipped, boardMatrix]);
 
     // Handle drag end locally to map coordinates back to target square
-    const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo, sourceSquare: Square, pieceInfo: { color: string, type: string }) => {
+    const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo, sourceSquare: Square, pieceInfo: { color: string, type: string }) => {
         setDraggingPieceId(null);
 
         if (!allowInteraction || !boardRef.current) {
@@ -240,6 +242,31 @@ export default React.memo(function GameBoard({
                                     })()}
                                 </svg>
                             )}
+
+                            {/* Classification Badge overlay */}
+                            {isLastMove && sq.squareName === lastMove.to && moveClassification && (
+                                <div className={`${styles.classificationBadge} ${
+                                    moveClassification === 'blunder' ? styles.badgeBlunder :
+                                    moveClassification === 'mistake' ? styles.badgeMistake :
+                                    moveClassification === 'inaccuracy' ? styles.badgeInaccuracy :
+                                    moveClassification === 'good' ? styles.badgeGood :
+                                    moveClassification === 'excellent' ? styles.badgeExcellent :
+                                    moveClassification === 'best' ? styles.badgeBest :
+                                    moveClassification === 'brilliant' ? styles.badgeBrilliant :
+                                    moveClassification === 'book' ? styles.badgeBook :
+                                    moveClassification === 'forced' ? styles.badgeForced : ''
+                                }`}>
+                                    {moveClassification === 'blunder' ? '??' :
+                                     moveClassification === 'mistake' ? '?' :
+                                     moveClassification === 'inaccuracy' ? '?!' :
+                                     moveClassification === 'good' ? '✓' :
+                                     moveClassification === 'excellent' ? '★' :
+                                     moveClassification === 'best' ? '★' :
+                                     moveClassification === 'brilliant' ? '!!' :
+                                     moveClassification === 'book' ? '📖' :
+                                     moveClassification === 'forced' ? '→' : ''}
+                                </div>
+                            )}
                         </div>
                     );
                 })}
@@ -289,11 +316,11 @@ export default React.memo(function GameBoard({
                                 className={`${styles.pieceContainer} ${isDragging ? styles.dragging : ''}`}
                                 drag={allowInteraction}
                                 dragSnapToOrigin
-                                dragElastic={0}
+                                dragElastic={0.1}
                                 onDragStart={() => setDraggingPieceId(pieceKey)}
                                 onDragEnd={(e, info) => handleDragEnd(e, info, sq.squareName, piece)}
-                                whileDrag={{ scale: 1.15, cursor: 'grabbing' }}
-                                onClick={(e) => {
+                                whileDrag={{ scale: 1.25, rotate: 2, cursor: 'grabbing' }}
+                                onClick={(_e) => {
                                     // Let square click handle it, but prevent bubbling issues if needed
                                 }}
                             >

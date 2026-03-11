@@ -30,7 +30,7 @@ const SETTINGS_STORAGE_KEY = 'Y2hlc3NNYXhfc2V0dGluZ3M='; // base64 of 'chessMax_
 
 const defaultSettings: SettingsState = {
     boardTheme: 'blue',
-    pieceSet: 'tatiana',
+    pieceSet: 'alpha',
     showLegalMoves: true,
     highlightLastMove: true,
     panicUrl: 'https://google.com',

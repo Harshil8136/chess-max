@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import styles from './PromotionDialog.module.css';
 
 // Standard chess piece Unicode characters for promotion choices

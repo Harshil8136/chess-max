@@ -4,7 +4,7 @@ export function useStealthMode(
     appState: string,
     fen: string,
     stockfish: { stopEngine: () => void; requestAnalysis: (fen: string) => void },
-    showNewGameDialog: boolean,
+    _showNewGameDialog: boolean,
     panicUrl: string
 ) {
     // Panic Button: Double Escape

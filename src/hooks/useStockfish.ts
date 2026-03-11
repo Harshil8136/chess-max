@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { EngineState, EngineResponse } from '@/types/chess';
+import { EngineState } from '@/types/chess';
 import { EloLevel } from '@/types/chess';
 
 export interface UseStockfishReturn {
@@ -107,11 +107,14 @@ export function useStockfish(): UseStockfishReturn {
             let mateVal: number | null = null;
             let pvVal: string | null = null;
 
-            if (depthMatch) setDepth(parseInt(depthMatch[1], 10));
+            if (depthMatch && searchTypeRef.current !== 'batch') setDepth(parseInt(depthMatch[1], 10));
+            
             if (scoreMatch) {
                 evalVal = parseInt(scoreMatch[1], 10) / 100;
                 if (multipvIndex === 1) {
-                    setEvaluation(evalVal);
+                    if (searchTypeRef.current !== 'batch') {
+                        setEvaluation(evalVal);
+                    }
                     latestEvalRef.current.evaluation = evalVal;
                     latestEvalRef.current.mate = null;
                 }
@@ -119,17 +122,19 @@ export function useStockfish(): UseStockfishReturn {
             if (mateMatch) {
                 mateVal = parseInt(mateMatch[1], 10);
                 if (multipvIndex === 1) {
-                    setMate(mateVal);
+                    if (searchTypeRef.current !== 'batch') {
+                        setMate(mateVal);
+                    }
                     latestEvalRef.current.mate = mateVal;
                     latestEvalRef.current.evaluation = null;
                 }
             }
             if (pvMatch) {
                 pvVal = pvMatch[1];
-                if (multipvIndex === 1) setPv(pvVal);
+                if (multipvIndex === 1 && searchTypeRef.current !== 'batch') setPv(pvVal);
             }
 
-            if (pvVal) {
+            if (pvVal && searchTypeRef.current !== 'batch') {
                 setMultiPv(prev => {
                     const next = [...prev];
                     const existingIndex = next.findIndex(x => x.multipv === multipvIndex);

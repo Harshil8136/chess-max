@@ -1,0 +1,116 @@
+.welcomeContainer {
+    position: relative;
+    width: 100%;
+    min-height: 100dvh;
+    background-color: #161512; /* Deep chess.com style dark */
+    overflow: hidden;
+    font-family: var(--font-plus-jakarta), sans-serif;
+}
+
+/* 
+  Pure CSS Animated Chessboard Background
+  Creates a subtle 8x8 checkerboard pattern that slowly pans
+*/
+.boardBackground {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: 
+        linear-gradient(45deg, rgba(255, 255, 255, 0.02) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.02) 75%, rgba(255, 255, 255, 0.02)),
+        linear-gradient(45deg, rgba(255, 255, 255, 0.02) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.02) 75%, rgba(255, 255, 255, 0.02));
+    background-size: 100px 100px;
+    background-position: 0 0, 50px 50px;
+    z-index: 0;
+    transform: perspective(1000px) rotateX(45deg) scale(2);
+    transform-origin: center top;
+    animation: panBoard 60s linear infinite;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
+}
+
+@keyframes panBoard {
+    0% {
+        background-position: 0 0, 50px 50px;
+    }
+    100% {
+        background-position: 0 1000px, 50px 1050px;
+    }
+}
+
+.bgGradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 30%, rgba(129, 182, 76, 0.1) 0%, rgba(22, 21, 18, 1) 60%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Primary Button with Shimmer */
+.primaryButton {
+    position: relative;
+    overflow: hidden;
+    margin-top: 2rem;
+    padding: 1rem 3rem;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: white;
+    background: linear-gradient(135deg, #81b64c, #6da33a);
+    border-radius: 9999px;
+    box-shadow: 0 10px 30px -10px rgba(129, 182, 76, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease;
+}
+
+.primaryButton:hover {
+    box-shadow: 0 15px 40px -10px rgba(129, 182, 76, 0.7);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.shimmer {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transform: skewX(-20deg);
+    animation: shimmerSlide 3s infinite 2s;
+}
+
+@keyframes shimmerSlide {
+    0% { left: -100%; }
+    20% { left: 200%; }
+    100% { left: 200%; }
+}
+
+/* Quick Play Presets */
+.quickPlayBtn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 200px;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.75rem;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+}
+
+.quickPlayBtn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(129, 182, 76, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.quickPlayBtn:hover svg {
+    color: white;
+    transform: translateX(2px);
+}
+
+.quickPlayBtn svg {
+    transition: all 0.2s ease;
+}

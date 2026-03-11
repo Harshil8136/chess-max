@@ -68,7 +68,14 @@ export function useChessGame(initialColor: PlayerColor = 'w'): UseChessGameRetur
     const isPlayerTurn = turn === playerColor;
 
     // Memoize board matrix keyed on FEN — avoids creating new 8x8 array on every render
-    const boardMatrix = useMemo(() => gameRef.current.board(), [fen]);
+    // Use a new instance rather than gameRef because gameRef handles live play
+    const boardMatrix = useMemo(() => {
+        try {
+            return new Chess(fen).board();
+        } catch {
+            return gameRef.current.board();
+        }
+    }, [fen]);
 
     const capturedPieces = useMemo((): CapturedPieces => {
         const captured: CapturedPieces = { w: [], b: [] };

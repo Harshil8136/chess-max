@@ -81,17 +81,3 @@ export const TIME_CONTROLS: TimeControl[] = [
 export const DEFAULT_ELO = ELO_LEVELS[4]; // 1200
 export const DEFAULT_TIME_CONTROL = TIME_CONTROLS[8]; // unlimited
 
-export function getEloLevel(elo: number): EloLevel {
-    const closest = ELO_LEVELS.reduce((prev, curr) =>
-        Math.abs(curr.elo - elo) < Math.abs(prev.elo - elo) ? curr : prev
-    );
-    return closest;
-}
-
-export function getEloColor(elo: number): string {
-    if (elo <= 600) return '#7fa650';
-    if (elo <= 1000) return '#e5a42b';
-    if (elo <= 1400) return '#e58f2a';
-    if (elo <= 1800) return '#d4542a';
-    return '#b33a3a';
-}

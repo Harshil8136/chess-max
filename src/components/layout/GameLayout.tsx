@@ -7,7 +7,7 @@ import { getMaterialAdvantage } from '@/lib/engine';
 import { soundManager } from '@/lib/sounds';
 import { Square } from 'chess.js';
 import { PlayerColor } from '@/types/chess';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 import styles from '@/app/page.module.css';
 
@@ -18,7 +18,6 @@ import GameSidebar from './GameSidebar';
 import GameBoard from '@/components/GameBoard/GameBoard';
 import EvalBar from '@/components/EvalBar/EvalBar';
 import PlayerBar from '@/components/PlayerBar/PlayerBar';
-import GameControls from '@/components/GameControls/GameControls';
 import NewGameDialog from '@/components/NewGameDialog/NewGameDialog';
 import GameOverModal from '@/components/GameOverModal/GameOverModal';
 import SettingsModal from '@/components/SettingsModal/SettingsModal';
@@ -54,6 +53,7 @@ export default function GameLayout() {
         handleReview,
         setAppState,
         settingsData,
+        analysis,
     } = useGame();
 
 
@@ -71,13 +71,10 @@ export default function GameLayout() {
         inCheck,
         boardMatrix,
         makeMove,
-        resign,
         goToFirst,
         goToPrev,
         goToNext,
         goToLast,
-        getPgn,
-        getFen,
         isPromotion,
         pendingPremove,
         setPremove,
@@ -91,16 +88,9 @@ export default function GameLayout() {
     const [showArchive, setShowArchive] = useState(false);
     const [showImporter, setShowImporter] = useState(false);
     const [showHelp, setShowHelp] = useState(false);
-    const [toast, setToast] = useState<string | null>(null);
     const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
     const [pendingPromotion, setPendingPromotion] = useState<{ from: Square; to: Square } | null>(null);
 
-    const showToast = useCallback((msg: string) => {
-        setToast(msg);
-        setTimeout(() => setToast(null), 2000);
-    }, []);
-
-    // Effect to execute pending premove automatically when it becomes the player's turn
     React.useEffect(() => {
         if (
             gameStatus === 'playing' &&
@@ -308,13 +298,11 @@ export default function GameLayout() {
     const bottomMaterialAdv = bottomPlayer === 'w' ? materialAdv : -materialAdv;
     const showClock = timeControl.initial > 0;
 
-    const handleCopyPgn = useCallback(() => {
-        navigator.clipboard.writeText(getPgn()).then(() => showToast('PGN copied!'));
-    }, [getPgn, showToast]);
-
-    const handleCopyFen = useCallback(() => {
-        navigator.clipboard.writeText(getFen()).then(() => showToast('FEN copied!'));
-    }, [getFen, showToast]);
+    const playedMoveColor = historyIndex >= 0 && history[historyIndex] ? history[historyIndex].color : null;
+    const moveAnalysis = (appState === 'review' && playedMoveColor && historyIndex >= 0) 
+        ? analysis.getMoveClassification(historyIndex + 1, playedMoveColor) 
+        : null;
+    const moveClassification = moveAnalysis?.classification || null;
 
     // Sync sound setting with global SoundManager
     React.useEffect(() => {
@@ -323,16 +311,13 @@ export default function GameLayout() {
 
     if (appState === 'welcome') {
         return (
-            <div className={styles.page}>
-                <LayoutHeader 
-                    onNewGame={() => setShowNewGameDialog(true)} 
-                    onOpenSettings={() => setShowSettings(true)} 
-                    onOpenArchive={() => setShowArchive(true)}
-                    onOpenHelp={() => setShowHelp(true)}
+            <div className={styles.welcomePageWrapper}>
+                <WelcomeScreen 
+                    onPlayNow={() => setShowNewGameDialog(true)} 
+                    onQuickPlay={(settings) => {
+                        handleStartGame(settings);
+                    }}
                 />
-                <main className={styles.main}>
-                    <WelcomeScreen onPlayNow={() => setShowNewGameDialog(true)} />
-                </main>
                 <NewGameDialog
                     open={showNewGameDialog}
                     onClose={() => setShowNewGameDialog(false)}
@@ -345,12 +330,7 @@ export default function GameLayout() {
     if (appState === 'loading') {
         return (
             <div className={styles.page}>
-                <LayoutHeader 
-                    onNewGame={() => setShowNewGameDialog(true)} 
-                    onOpenSettings={() => setShowSettings(true)} 
-                    onOpenArchive={() => setShowArchive(true)}
-                    onOpenHelp={() => setShowHelp(true)}
-                />
+                <LayoutHeader />
                 <main className={styles.main}>
                     <LoadingScreen />
                 </main>
@@ -366,65 +346,49 @@ export default function GameLayout() {
         gameStatus === 'timeout';
 
     return (
-        <div className={styles.page}>
-            <LayoutHeader 
-                onNewGame={() => setShowNewGameDialog(true)} 
-                onOpenSettings={() => setShowSettings(true)} 
-                onOpenArchive={() => setShowArchive(true)}
-                onOpenHelp={() => setShowHelp(true)}
-                controls={
-                    <GameControls
-                        gameActive={gameStatus === 'playing'}
-                        canResign={gameStatus === 'playing' && history.length > 0}
-                        soundEnabled={settingsData.settings.soundEnabled}
-                        onNewGame={() => setShowNewGameDialog(true)}
-                        onResign={resign}
-                        onToggleSound={() => settingsData.updateSetting('soundEnabled', !settingsData.settings.soundEnabled)}
-                        onFlipBoard={() => setBoardFlipped((prev) => !prev)}
-                        onCopyPgn={handleCopyPgn}
-                        onCopyFen={handleCopyFen}
-                        onOpenImport={() => setShowImporter(true)}
-                        isReviewMode={appState === 'review'}
-                        onExitReview={() => setShowNewGameDialog(true)}
-                        onOpenSettings={() => setShowSettings(true)}
-                    />
-                }
-            />
+        <div className="min-h-[100dvh] flex flex-col overflow-hidden relative">
+            <LayoutHeader />
 
-            <main className={styles.main}>
+            <main className="flex-1 flex justify-center items-stretch p-4 md:p-8 gap-4 md:gap-8 overflow-y-auto overflow-x-hidden relative z-10 max-lg:flex-col max-lg:items-center max-lg:max-h-full">
                 <motion.div 
-                    className={styles.boardSection}
+                    className="flex gap-2 md:gap-3 items-stretch justify-center w-full max-w-[1240px] shrink-0 max-lg:w-full h-fit flex-1"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, ease: 'easeOut' }}
                 >
+                    {/* Eval Bar */}
                     {settingsData.settings.showEvalBar && (
-                        <EvalBar
-                            evaluation={evaluation}
-                            mate={mate}
-                            flipped={playerColor === 'b'}
-                        />
+                        <div className="py-[min(6dvh,40px)] flex"> 
+                            <EvalBar
+                                evaluation={evaluation}
+                                mate={mate}
+                                flipped={playerColor === 'b'}
+                            />
+                        </div>
                     )}
 
-                    <div className={styles.boardColumn}>
+                    {/* Arena Container */}
+                    <div className="flex flex-col w-[min(80dvh,850px)] max-w-[calc(100vw-400px)] max-lg:max-w-none transition-all max-lg:w-[min(85vw,65dvh)] max-sm:w-[min(100vw-16px,100dvh-200px)]">
                         {/* Top Player Bar */}
-                        <PlayerBar
-                            name={topIsBot ? `Stockfish (${eloLevel.name})` : 'You'}
-                            elo={topIsBot ? eloLevel.elo : undefined}
-                            isBot={topIsBot}
-                            isActive={turn === topPlayer}
-                            isThinking={topIsBot && isThinking}
-                            capturedPieces={topCaptured}
-                            capturedColor={topPlayer === 'w' ? 'b' : 'w'}
-                            materialAdvantage={Math.max(0, topMaterialAdv)}
-                            timeRef={clock.timeRef}
-                            playerColor={topPlayer as 'w' | 'b'}
-                            showClock={showClock}
-                            formatTime={clock.formatTime}
-                        />
+                        <div className="w-full relative z-10 bg-[#262522] rounded-t-md">
+                            <PlayerBar
+                                name={topIsBot ? `Stockfish (${eloLevel.name})` : 'You'}
+                                elo={topIsBot ? eloLevel.elo : undefined}
+                                isBot={topIsBot}
+                                isActive={turn === topPlayer}
+                                isThinking={topIsBot && isThinking}
+                                capturedPieces={topCaptured}
+                                capturedColor={topPlayer === 'w' ? 'b' : 'w'}
+                                materialAdvantage={Math.max(0, topMaterialAdv)}
+                                timeRef={clock.timeRef}
+                                playerColor={topPlayer as 'w' | 'b'}
+                                showClock={showClock}
+                                formatTime={clock.formatTime}
+                            />
+                        </div>
 
                         {/* Chess Board */}
-                        <div className={styles.boardWrapper}>
+                        <div className="w-full aspect-square relative bg-[#302e2b] z-0">
                             <GameBoard
                                 fen={fen}
                                 boardFlipped={boardFlipped}
@@ -437,7 +401,8 @@ export default function GameLayout() {
                                 selectedSquare={selectedSquare}
                                 inCheck={inCheck}
                                 turn={turn}
-                                bestMove={stockfish.bestMove}
+                                bestMove={appState === 'review' ? analysis.cache[historyIndex + 1]?.bestMove ?? null : stockfish.bestMove}
+                                moveClassification={moveClassification}
                                 legalTargetSquares={legalTargetSquares}
                                 pendingPremove={pendingPremove}
                                 onPieceDrop={handlePieceDrop}
@@ -448,31 +413,38 @@ export default function GameLayout() {
                         </div>
 
                         {/* Bottom Player Bar */}
-                        <PlayerBar
-                            name={bottomIsBot ? `Stockfish (${eloLevel.name})` : 'You'}
-                            elo={bottomIsBot ? eloLevel.elo : undefined}
-                            isBot={bottomIsBot}
-                            isActive={turn === bottomPlayer}
-                            isThinking={bottomIsBot && isThinking}
-                            capturedPieces={bottomCaptured}
-                            capturedColor={bottomPlayer === 'w' ? 'b' : 'w'}
-                            materialAdvantage={Math.max(0, bottomMaterialAdv)}
-                            timeRef={clock.timeRef}
-                            playerColor={bottomPlayer as 'w' | 'b'}
-                            showClock={showClock}
-                            formatTime={clock.formatTime}
-                        />
+                        <div className="w-full relative z-10 bg-[#262522] rounded-b-md">
+                            <PlayerBar
+                                name={bottomIsBot ? `Stockfish (${eloLevel.name})` : 'You'}
+                                elo={bottomIsBot ? eloLevel.elo : undefined}
+                                isBot={bottomIsBot}
+                                isActive={turn === bottomPlayer}
+                                isThinking={bottomIsBot && isThinking}
+                                capturedPieces={bottomCaptured}
+                                capturedColor={bottomPlayer === 'w' ? 'b' : 'w'}
+                                materialAdvantage={Math.max(0, bottomMaterialAdv)}
+                                timeRef={clock.timeRef}
+                                playerColor={bottomPlayer as 'w' | 'b'}
+                                showClock={showClock}
+                                formatTime={clock.formatTime}
+                            />
+                        </div>
                     </div>
-                </motion.div>
 
-                {/* Side Panel (Consumes Context automatically) */}
-                <motion.div 
-                    className={styles.sidePanel}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
-                >
-                    <GameSidebar />
+                    {/* Side Panel (Consumes Context automatically) */}
+                    <motion.div 
+                        className="w-[clamp(320px,30vw,450px)] flex flex-col shrink-0 bg-[#262522] rounded-md max-h-[90dvh] overflow-hidden max-lg:hidden shadow-lg border border-white/5"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
+                    >
+                        <GameSidebar 
+                            onNewGame={() => setShowNewGameDialog(true)}
+                            onOpenSettings={() => setShowSettings(true)}
+                            onOpenArchive={() => setShowArchive(true)}
+                            onOpenHelp={() => setShowHelp(true)}
+                        />
+                    </motion.div>
                 </motion.div>
             </main>
 
@@ -495,9 +467,6 @@ export default function GameLayout() {
                 onClose={() => setShowNewGameDialog(false)}
                 onStartGame={handleStartGame}
             />
-
-            {/* Toast */}
-            {toast && <div className={styles.toast}>{toast}</div>}
 
             {/* Settings Modal */}
             <SettingsModal

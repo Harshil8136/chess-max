@@ -1,155 +1,11 @@
-.page {
+.welcomePageWrapper {
     min-height: 100dvh;
     display: flex;
     flex-direction: column;
     overflow: hidden;
     position: relative;
-}
-
-/* Ambient Background Glow */
-.page::before, .page::after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(100px);
-    opacity: 0.15;
-    z-index: -1;
-    pointer-events: none;
-}
-
-.page::before {
-    top: -10%;
-    left: -10%;
-    width: 50vw;
-    height: 50vw;
-    background: var(--accent-green);
-}
-
-.page::after {
-    bottom: -10%;
-    right: -10%;
-    width: 40vw;
-    height: 40vw;
-    background: var(--accent-orange);
-}
-
-/* ===== Header ===== */
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: clamp(0.5rem, 2vw, 1rem) clamp(1rem, 4vw, 1.5rem);
-    background: rgba(18, 18, 18, 0.7);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--glass-border);
-    flex-shrink: 0;
-    z-index: 10;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-}
-
-.logoIcon {
-    font-size: clamp(1.2rem, 3vw, 1.5rem);
-}
-
-.logoText {
-    font-size: clamp(1rem, 2.5vw, 1.25rem);
-    font-weight: 800;
-    color: var(--text-primary);
-    letter-spacing: -0.5px;
-}
-
-.logoAccent {
-    color: var(--accent-green);
-}
-
-.headerActions {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-}
-
-/* ===== Main Content ===== */
-.main {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: stretch; /* Stretch to fill height for glass cards */
-    padding: clamp(1rem, 3vw, 2rem) clamp(0.5rem, 2vw, 1.5rem);
-    gap: clamp(1rem, 3vw, 2rem);
-    overflow-y: auto;
-    overflow-x: hidden;
-    position: relative;
-    z-index: 1;
-}
-
-/* ===== Board Section (eval bar + board + player bars) ===== */
-.boardSection {
-    display: flex;
-    gap: var(--space-md);
-    align-items: center; /* Center items vertically within the wrapper */
-    justify-content: center;
-    max-width: 1200px;
-    flex-shrink: 0;
-    
-    /* Glassmorphism Wrapper for the entire playable area */
-    background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-md) var(--space-lg);
-    box-shadow: var(--shadow-lg);
-}
-
-.boardColumn {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-md); /* Add gap between PlayerBars and Board */
-    width: min(72dvh, 700px);
-    transition: width var(--transition-normal);
-}
-
-.boardWrapper {
-    width: 100%;
-    aspect-ratio: 1;
-    position: relative;
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); /* Stronger shadow for the board itself */
-    background: var(--bg-surface);
-}
-
-/* ===== Side Panel ===== */
-.sidePanel {
-    width: clamp(300px, 28vw, 400px);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-md);
-    flex-shrink: 0;
-    
-    /* Glassmorphism Wrapper */
-    background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-md);
-    box-shadow: var(--shadow-md);
-    
-    max-height: calc(100dvh - 80px - clamp(2rem, 6vw, 4rem)); /* Viewport minus header and padding */
-    height: auto;
-    overflow: hidden;
-}
-
-/* ===== Game Controls / Header padding ===== */
-.boardHeader {
-    width: 100%;
+    width: 100vw;
+    font-family: var(--font-plus-jakarta), sans-serif;
 }
 
 /* =============================================== */
@@ -381,52 +237,10 @@
 
 /* Tablet & Smaller Desktop (Stacking layout starts here) */
 @media (max-width: 1024px) {
-    .main {
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-    }
-
-    .boardSection {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .boardColumn {
-        width: min(85vw, 65dvh);
-    }
-
-    .sidePanel {
-        width: 100%;
-        max-width: min(85vw, 65dvh);
-        max-height: 400px;
-    }
 }
 
 /* Mobile Phones (Extreme constraints) */
 @media (max-width: 600px) {
-    .main {
-        padding: clamp(0.25rem, 1vw, 0.5rem);
-        gap: var(--space-sm);
-    }
-
-    .header {
-        padding: var(--space-sm) var(--space-md);
-    }
-
-    .boardColumn {
-        width: min(100vw - 16px, 100dvh - 200px); /* Taller board since controls moved to header */
-    }
-
-    .sidePanel {
-        max-width: min(100vw - 16px, 100dvh - 200px);
-        flex-shrink: 0;
-    }
-
-    .logoText {
-        display: none; /* Hide text logo on mobile to make room for controls */
-    }
-
     /* Welcome screen adjustments */
     .welcome {
         padding: var(--space-lg);
@@ -447,14 +261,6 @@
 
 /* Ultra-short height (Landscape mobile or very short browsers) */
 @media (max-height: 500px) {
-    .boardColumn {
-        width: min(85vw, 100dvh - 150px);
-    }
-
-    .header {
-        display: none;
-    }
-
     .welcome {
         min-height: auto;
         padding: var(--space-md);

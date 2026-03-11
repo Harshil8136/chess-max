@@ -9,9 +9,11 @@ interface InsightPanelProps {
     turn: 'w' | 'b';
     multiPv?: { multipv: number; pv: string; evaluation: number | null; mate: number | null }[];
     onRetry?: () => void;
+    onPrevMistake?: () => void;
+    onNextMistake?: () => void;
 }
 
-export default React.memo(function InsightPanel({ analysis, isReviewMode, turn, multiPv, onRetry }: InsightPanelProps) {
+export default React.memo(function InsightPanel({ analysis, isReviewMode, turn, multiPv, onRetry, onPrevMistake, onNextMistake }: InsightPanelProps) {
     if (!isReviewMode) return null;
 
     if (!analysis) {
@@ -22,7 +24,7 @@ export default React.memo(function InsightPanel({ analysis, isReviewMode, turn, 
         );
     }
 
-    const { classification, delta, bestMove, evaluation, mate } = analysis;
+    const { classification, bestMove, evaluation, mate } = analysis;
 
     let title = 'Insight';
     let description = '';
@@ -96,51 +98,62 @@ export default React.memo(function InsightPanel({ analysis, isReviewMode, turn, 
 
     return (
         <div className={`${styles.panel} ${themeClass}`}>
-            <div className={styles.header}>
-                <div className={styles.titleGroup}>
-                    <Icon size={20} className={styles.icon} />
-                    <span className={styles.title}>{title}</span>
-                </div>
-                <span className={styles.evalBadge}>{evalText}</span>
-            </div>
-            <p className={styles.description}>
-                {description}
-            </p>
-            {multiPv && multiPv.length > 0 && (
-                <div className={styles.pvBox}>
-                    <span className={styles.pvLabel}>Top Engine Lines:</span>
-                    <div className={styles.pvList}>
-                        {multiPv.map((line, i) => {
-                            let lineEvalText = '';
-                            if (line.mate !== null) {
-                                // Assume UCI sets mate relative to side-to-move
-                                // So we map it absolutely to white/black
-                                const multiplier = turn === 'w' ? 1 : -1;
-                                const absMate = line.mate * multiplier;
-                                lineEvalText = `M${Math.abs(absMate)}`;
-                            } else if (line.evaluation !== null) {
-                                const multiplier = turn === 'w' ? 1 : -1;
-                                const absEval = line.evaluation * multiplier;
-                                lineEvalText = `${absEval > 0 ? '+' : ''}${absEval.toFixed(1)}`;
-                            }
-                            
-                            return (
-                                <div key={i} className={styles.pvRow}>
-                                    {lineEvalText && <span className={styles.pvEvalBadge}>{lineEvalText}</span>}
-                                    <span className={styles.pvText}>{line.pv}</span>
-                                </div>
-                            );
-                        })}
+            <div className={styles.innerContent}>
+                <div className={styles.header}>
+                    <div className={styles.titleGroup}>
+                        <div className={styles.iconWrapper}><Icon size={16} className={styles.icon} strokeWidth={2.5}/></div>
+                        <span className={styles.title}>{title}</span>
                     </div>
+                    <span className={styles.evalBadge}>{evalText}</span>
                 </div>
-            )}
-            {onRetry && (classification === 'blunder' || classification === 'mistake' || classification === 'inaccuracy') && (
-                <button 
-                    onClick={onRetry}
-                    className={styles.retryBtn}
-                >
-                    Retry Mistake
-                </button>
+                
+                <p className={styles.description}>
+                    {description}
+                </p>
+
+                {multiPv && multiPv.length > 0 && (
+                    <div className={styles.pvBox}>
+                        <span className={styles.pvLabel}>TOP ENGINE LINES:</span>
+                        <div className={styles.pvList}>
+                            {multiPv.map((line, i) => {
+                                let lineEvalText = '';
+                                if (line.mate !== null) {
+                                    const multiplier = turn === 'w' ? 1 : -1;
+                                    const absMate = line.mate * multiplier;
+                                    lineEvalText = `M${Math.abs(absMate)}`;
+                                } else if (line.evaluation !== null) {
+                                    const multiplier = turn === 'w' ? 1 : -1;
+                                    const absEval = line.evaluation * multiplier;
+                                    lineEvalText = `${absEval > 0 ? '+' : ''}${absEval.toFixed(1)}`;
+                                }
+                                
+                                return (
+                                    <div key={i} className={styles.pvRow}>
+                                        {lineEvalText && <span className={styles.pvEvalBadge}>{lineEvalText}</span>}
+                                        <span className={styles.pvText}>{line.pv}</span>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
+                
+                {onRetry && (classification === 'blunder' || classification === 'mistake' || classification === 'inaccuracy') && (
+                    <button onClick={onRetry} className={`${styles.retryBtn} active:scale-[0.97] transition-transform origin-center`}>
+                        Retry Mistake
+                    </button>
+                )}
+            </div>
+            
+            {(onPrevMistake || onNextMistake) && (
+                <div className={styles.mistakeNav}>
+                    <button onClick={onPrevMistake} className={`${styles.navBtn} active:scale-[0.97] transition-transform origin-center`}>
+                        <ArrowRightCircle size={14} className={styles.chevronLeft} /> Prev Mistake
+                    </button>
+                    <button onClick={onNextMistake} className={`${styles.navBtn} active:scale-[0.97] transition-transform origin-center`}>
+                        Next Mistake <ArrowRightCircle size={14} className={styles.chevronRight} />
+                    </button>
+                </div>
             )}
         </div>
     );

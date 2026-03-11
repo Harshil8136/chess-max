@@ -13,7 +13,7 @@ export default React.memo(function ReviewStats({ stats }: ReviewStatsProps) {
     const StatRow = ({ icon: Icon, label, colorClass, wCount, bCount }: any) => (
         <div className={styles.statRow}>
             <div className={`${styles.iconLabel} ${colorClass}`}>
-                <Icon size={16} />
+                <Icon size={16} strokeWidth={2.5}/>
                 <span>{label}</span>
             </div>
             <div className={styles.counts}>
@@ -25,14 +25,20 @@ export default React.memo(function ReviewStats({ stats }: ReviewStatsProps) {
 
     return (
         <div className={styles.container}>
+            <div className={styles.mainHeader}>
+                <span className={styles.mainTitle}>Accuracy</span>
+            </div>
+            
             <div className={styles.accuracyHeader}>
                 <div className={styles.accuracyBox}>
-                    <span className={styles.playerLabel}>White</span>
+                    <span className={styles.playerLabel}>WHITE</span>
                     <span className={styles.accuracyValue}>{stats.whiteAccuracy.toFixed(1)}%</span>
                 </div>
-                <div className={styles.vs}>VS</div>
+                <div className={styles.vsWrapper}>
+                    <div className={styles.vs}>VS</div>
+                </div>
                 <div className={styles.accuracyBox}>
-                    <span className={styles.playerLabel}>Black</span>
+                    <span className={styles.playerLabel}>BLACK</span>
                     <span className={styles.accuracyValue}>{stats.blackAccuracy.toFixed(1)}%</span>
                 </div>
             </div>
@@ -40,8 +46,8 @@ export default React.memo(function ReviewStats({ stats }: ReviewStatsProps) {
             <div className={styles.statsGrid}>
                 {/* Headers */}
                 <div className={styles.statRowHeader}>
-                    <div className={styles.iconLabel}>Move Type</div>
-                    <div className={styles.counts}>
+                    <div className={styles.columnLabel}>MOVE TYPE</div>
+                    <div className={styles.countsHeader}>
                         <span className={styles.wCount}>W</span>
                         <span className={styles.bCount}>B</span>
                     </div>

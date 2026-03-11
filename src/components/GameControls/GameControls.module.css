@@ -1,0 +1,64 @@
+.commandDeckWrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.commandDeck {
+    display: flex;
+    align-items: center;
+    gap: 4px; /* Tighter gap for the pill */
+    padding: 6px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-sm);
+    flex-wrap: wrap;
+    justify-content: center;
+    min-width: fit-content;
+}
+
+.commandDeck button {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: var(--radius-full);
+    color: var(--text-secondary);
+    min-width: 36px;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+}
+
+.commandDeck button:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.commandDeck button:active {
+    transform: scale(0.92);
+}
+
+.separator {
+    width: 1px;
+    height: 20px;
+    background: var(--border-color);
+    margin: 0 4px;
+}
+
+/* Hide secondary actions on mobile to fit the pill in the header gracefully */
+@media (max-width: 600px) {
+    .hideOnMobile {
+        display: none !important;
+    }
+    
+    .commandDeck button {
+        min-width: 44px; /* Larger tap targets for mobile "perfectly made" */
+        min-height: 44px;
+        padding: 0;
+    }
+}

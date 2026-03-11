@@ -1,0 +1,173 @@
+/* ─── GameBoard Custom Renderer ─────────────────────────────────────────── */
+
+.boardWrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    user-select: none;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-board);
+    touch-action: none;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    width: 100%;
+    height: 100%;
+}
+
+/* ─── Individual Square ─────────────────────────────────────────────────── */
+
+.square {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.squareLight {
+    background-color: var(--sq-light, var(--board-light));
+}
+
+.squareDark {
+    background-color: var(--sq-dark, var(--board-dark));
+}
+
+/* ─── Highlight Overlays (GPU-only: opacity + transform) ────────────────── */
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.lastMoveOverlay {
+    background: rgba(247, 215, 80, 0.42);
+}
+
+.selectedOverlay {
+    background: rgba(247, 215, 80, 0.58);
+    box-shadow: inset 0 0 0 3px rgba(247, 215, 80, 0.9);
+}
+
+.premoveOverlay {
+    background: rgba(220, 85, 50, 0.45);
+}
+
+.checkOverlay {
+    background: radial-gradient(ellipse at center,
+        rgba(255, 0, 0, 0.72) 0%,
+        rgba(255, 0, 0, 0.38) 38%,
+        rgba(255, 0, 0, 0) 72%
+    );
+}
+
+/* ─── Legal Move Indicators ─────────────────────────────────────────────── */
+
+.legalDot {
+    position: absolute;
+    width: 30%;
+    height: 30%;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.legalCaptureDot {
+    position: absolute;
+    inset: 0;
+    border-radius: 0;
+    background: radial-gradient(
+        transparent 54%,
+        rgba(0, 0, 0, 0.18) 54%,
+        rgba(0, 0, 0, 0.18) 70%,
+        transparent 70%
+    );
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Arrow overlay canvas */
+.arrowCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* ─── Chess Piece Image ─────────────────────────────────────────────────── */
+
+.pieceContainer {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    cursor: grab;
+}
+
+.pieceContainer:active {
+    cursor: grabbing;
+}
+
+.pieceImg {
+    width: 88%;
+    height: 88%;
+    object-fit: contain;
+    pointer-events: none;
+    /* GPU compositing */
+    will-change: transform;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+}
+
+/* ─── Dragging state ────────────────────────────────────────────────────── */
+
+.dragging {
+    opacity: 0.15;
+}
+
+/* ─── Board Coordinate Labels ───────────────────────────────────────────── */
+
+.fileLabel {
+    position: absolute;
+    bottom: 2px;
+    right: 4px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    line-height: 1;
+    pointer-events: none;
+    z-index: 4;
+    opacity: 0.75;
+}
+
+.rankLabel {
+    position: absolute;
+    top: 2px;
+    left: 3px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    line-height: 1;
+    pointer-events: none;
+    z-index: 4;
+    opacity: 0.75;
+}
+
+.labelOnDark {
+    color: var(--sq-light, var(--board-light));
+}
+
+.labelOnLight {
+    color: var(--sq-dark, var(--board-dark));
+}

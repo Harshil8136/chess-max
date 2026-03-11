@@ -1,0 +1,95 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.15s ease-out;
+}
+
+.dialog {
+    background: var(--surface-primary, #1a1a2e);
+    border-radius: 16px;
+    padding: 20px 24px;
+    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    min-width: 260px;
+    animation: slideUp 0.2s ease-out;
+}
+
+.title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary, #aaa);
+    text-align: center;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.pieces {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.pieceButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 8px;
+    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+    border-radius: 12px;
+    background: var(--surface-secondary, rgba(255, 255, 255, 0.05));
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.pieceButton:hover {
+    background: var(--accent-green, #7fa650);
+    border-color: var(--accent-green, #7fa650);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(127, 166, 80, 0.3);
+}
+
+.pieceButton:active {
+    transform: translateY(0);
+}
+
+.pieceIcon {
+    font-size: 2rem;
+    line-height: 1;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.pieceLabel {
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--text-secondary, #aaa);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.pieceButton:hover .pieceLabel {
+    color: white;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}

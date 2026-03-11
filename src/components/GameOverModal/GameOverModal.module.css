@@ -1,0 +1,169 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    animation: fade-in var(--transition-normal);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.modal {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border-radius: var(--radius-2xl);
+    padding: var(--space-3xl) var(--space-2xl) var(--space-2xl);
+    width: 380px;
+    max-width: 92vw;
+    box-shadow: var(--shadow-lg);
+    animation: scale-in-spring 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    border: 1px solid var(--glass-border);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle gradient accent at top */
+.modal::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-green), var(--accent-blue), var(--accent-purple));
+    border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+}
+
+.icon {
+    font-size: 3.5rem;
+    margin-bottom: var(--space-lg);
+    animation: scale-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both;
+    display: inline-block;
+}
+
+.result {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: var(--space-sm);
+}
+
+.winner {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-bottom: var(--space-sm);
+    letter-spacing: -0.5px;
+}
+
+.winnerWin {
+    color: var(--accent-green);
+    text-shadow: 0 0 30px rgba(129, 182, 76, 0.3);
+}
+
+.winnerLose {
+    color: var(--accent-red);
+}
+
+.winnerDraw {
+    color: var(--accent-yellow);
+}
+
+.reason {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-xl);
+}
+
+.graphContainer {
+    width: 100%;
+    margin-bottom: var(--space-xl);
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    padding: var(--space-xs);
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.rematchBtn {
+    width: 100%;
+    padding: var(--space-md) var(--space-xl);
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, var(--accent-green), #6da33a);
+    color: var(--text-on-accent);
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.rematchBtn:hover {
+    background: linear-gradient(135deg, var(--accent-green-hover), #7db84a);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px var(--accent-green-glow);
+}
+
+.rematchBtn:active {
+    transform: scale(0.97);
+    transition-duration: 50ms;
+}
+
+.reviewBtn {
+    width: 100%;
+    padding: var(--space-md) var(--space-xl);
+    font-size: 0.95rem;
+    font-weight: 700;
+    border-radius: var(--radius-lg);
+    background: var(--accent-blue);
+    color: var(--text-on-accent);
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.reviewBtn:hover {
+    background: #4a8ae0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(92, 154, 229, 0.25);
+}
+
+.reviewBtn:active {
+    transform: scale(0.97);
+    transition-duration: 50ms;
+}
+
+.newGameBtn {
+    width: 100%;
+    padding: var(--space-md) var(--space-xl);
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: var(--radius-lg);
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.newGameBtn:hover {
+    background: var(--bg-hover);
+    border-color: var(--border-color-hover);
+    transform: translateY(-1px);
+}
+
+.newGameBtn:active {
+    transform: scale(0.97);
+    transition-duration: 50ms;
+}

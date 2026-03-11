@@ -1,0 +1,188 @@
+.panel {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: var(--radius);
+    background: var(--surface);
+    border-left: 4px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.titleGroup {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.title {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.evalBadge {
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+}
+
+.description {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.loading {
+    color: var(--text-muted);
+    font-style: italic;
+    text-align: center;
+    margin: 0;
+}
+
+/* Themes */
+.themeDefault {
+    border-color: var(--border);
+}
+.themeDefault .icon { color: var(--text-secondary); }
+
+.themeBrilliant {
+    border-color: #26c6da;
+    background: rgba(38, 198, 218, 0.05);
+}
+.themeBrilliant .icon { color: #26c6da; }
+
+.themeBook {
+    border-color: #a3886d;
+    background: rgba(163, 136, 109, 0.05);
+}
+.themeBook .icon { color: #a3886d; }
+
+.themeForced {
+    border-color: #9e9e9e;
+    background: rgba(158, 158, 158, 0.05);
+}
+.themeForced .icon { color: #9e9e9e; }
+
+.themeBlunder {
+    border-color: #f73131;
+    background: rgba(247, 49, 49, 0.05);
+}
+.themeBlunder .icon { color: #f73131; }
+
+.themeMistake {
+    border-color: #ffa333;
+    background: rgba(255, 163, 51, 0.05);
+}
+.themeMistake .icon { color: #ffa333; }
+
+.themeInaccuracy {
+    border-color: #ffda33;
+    background: rgba(255, 218, 51, 0.05);
+}
+.themeInaccuracy .icon { color: #ffda33; }
+
+.themeBest {
+    border-color: #71b533;
+    background: rgba(113, 181, 51, 0.05);
+}
+.themeBest .icon { color: #71b533; }
+
+.themeExcellent {
+    border-color: #4b8b1b;
+    background: rgba(75, 139, 27, 0.05);
+}
+.themeExcellent .icon { color: #4b8b1b; }
+
+.themeGood {
+    border-color: #779556;
+}
+.themeGood .icon { color: #779556; }
+
+.pvBox {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.pvLabel {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.pvText {
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+    scrollbar-width: thin;
+}
+
+.pvText::-webkit-scrollbar {
+    height: 4px;
+}
+
+.pvText::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.pvText::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+
+.pvList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.pvRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.pvEvalBadge {
+    font-family: monospace;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: var(--text-primary);
+    background: rgba(0,0,0,0.1);
+    padding: 2px 4px;
+    border-radius: 4px;
+    min-width: 35px;
+    text-align: right;
+    display: inline-block;
+}
+
+.retryBtn {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.retryBtn:hover {
+    background: var(--border);
+}

@@ -1,0 +1,112 @@
+.panel {
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    box-shadow: var(--shadow-md);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.openingName {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent-green);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.moveCount {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.moves {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-sm);
+}
+
+.moveRow {
+    display: flex;
+    align-items: center;
+    border-radius: var(--radius-sm);
+}
+
+.moveRow:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.moveNumber {
+    width: 32px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+    flex-shrink: 0;
+    font-weight: 500;
+}
+
+.move {
+    flex: 1;
+    padding: 4px 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: background var(--transition-fast);
+    text-align: center;
+}
+
+.move:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.moveActive {
+    background: var(--accent-green) !important;
+    color: var(--text-on-accent);
+    font-weight: 700;
+}
+
+.moveCheck {
+    color: var(--accent-red);
+}
+
+.moveCapture {
+    color: var(--accent-orange);
+}
+
+.empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-md);
+    border-top: 1px solid var(--border-color);
+    justify-content: center;
+}
+.badge { font-size: 0.7rem; font-weight: bold; margin-left: 4px; padding: 1px 4px; border-radius: 4px; color: white; display: inline-block; vertical-align: middle; line-height: 1; }
+.badgeBlunder { background-color: #f73131; }
+.badgeMistake { background-color: #ffa333; }
+.badgeInaccuracy { background-color: #ffda33; color: #333; }
+.badgeBest { background-color: #71b533; }
+.badgeExcellent { background-color: #4b8b1b; }

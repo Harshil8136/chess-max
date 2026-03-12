@@ -1,5 +1,5 @@
 import { useMemo, useCallback, useState } from 'react';
-import { Plus, Settings, Archive, HelpCircle, BookOpen, Share2, Info, Activity, Target } from 'lucide-react';
+import { Plus, Settings, Archive, BookOpen, Share2, Info, Activity, Target, Home } from 'lucide-react';
 import MoveHistory from '@/components/MoveHistory/MoveHistory';
 import InsightPanel from '@/components/InsightPanel/InsightPanel';
 import EvaluationGraph from '@/components/EvaluationGraph/EvaluationGraph';
@@ -16,12 +16,13 @@ export interface GameSidebarProps {
     onOpenSettings: () => void;
     onOpenArchive: () => void;
     onOpenHelp: () => void;
+    onGoHome: () => void;
 }
 
 // ─── Static Config ────────────────────────────────────────────────────────────
 
 const NAV_BUTTONS = [
-    { id: 'help', label: 'Help', Icon: HelpCircle, action: 'onOpenHelp' },
+    { id: 'home', label: 'Home', Icon: Home, action: 'onGoHome' },
     { id: 'new', label: 'New Game', Icon: Plus, action: 'onNewGame' },
     { id: 'archive', label: 'Games', Icon: Archive, action: 'onOpenArchive' },
     { id: 'settings', label: 'Settings', Icon: Settings, action: 'onOpenSettings' },
@@ -276,6 +277,7 @@ export default function GameSidebar({
     onOpenSettings,
     onOpenArchive,
     onOpenHelp,
+    onGoHome,
 }: GameSidebarProps) {
     const {
         chessGame,
@@ -292,8 +294,8 @@ export default function GameSidebar({
 
     // Stable map from action-key → callback (avoids re-creating NavButton onClick refs)
     const actionMap = useMemo(
-        () => ({ onOpenHelp, onNewGame, onOpenArchive, onOpenSettings }),
-        [onOpenHelp, onNewGame, onOpenArchive, onOpenSettings]
+        () => ({ onOpenHelp, onNewGame, onOpenArchive, onOpenSettings, onGoHome }),
+        [onOpenHelp, onNewGame, onOpenArchive, onOpenSettings, onGoHome]
     );
 
     // ── Convert raw UCI PV lines → SAN (capped at 8 ply for UI readability) ──

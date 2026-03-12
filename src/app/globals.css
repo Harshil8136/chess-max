@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+@source "../";
 /* System font stack with Inter fallback */
 :root {
   /* ===== chess.com-inspired dark palette ===== */
@@ -114,13 +114,6 @@
   --color-accent-orange: var(--accent-orange);
   --color-accent-red: var(--accent-red);
   --color-accent-blue: var(--accent-blue);
-  
-  --spacing-xs: var(--space-xs);
-  --spacing-sm: var(--space-sm);
-  --spacing-md: var(--space-md);
-  --spacing-lg: var(--space-lg);
-  --spacing-xl: var(--space-xl);
-  --spacing-2xl: var(--space-2xl);
 }
 
 @utility glass-panel {
@@ -218,28 +211,30 @@
   letter-spacing: -0.5px;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-html {
-  font-size: 14px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  html {
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-body {
-  font-family: var(--font-plus-jakarta), sans-serif;
-  background-color: var(--bg-primary); /* Flat dark grey #302e2b */
-  color: var(--text-primary);
-  min-height: 100dvh;
-  overflow-x: hidden;
-  overscroll-behavior-y: none;
-  -webkit-tap-highlight-color: transparent;
+  body {
+    font-family: var(--font-plus-jakarta), sans-serif;
+    background-color: var(--bg-primary); /* Flat dark grey #302e2b */
+    color: var(--text-primary);
+    min-height: 100dvh;
+    overflow-x: hidden;
+    overscroll-behavior-y: none;
+    -webkit-tap-highlight-color: transparent;
+  }
 }
 
 /* ===== Scrollbar Styling ===== */

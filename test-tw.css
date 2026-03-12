@@ -1,0 +1,4 @@
+@import "tailwindcss";
+@theme {
+  --spacing-2xl: 32px;
+}

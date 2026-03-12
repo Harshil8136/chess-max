@@ -443,6 +443,7 @@ export default function GameLayout() {
                             onOpenSettings={() => setShowSettings(true)}
                             onOpenArchive={() => setShowArchive(true)}
                             onOpenHelp={() => setShowHelp(true)}
+                            onGoHome={() => setAppState('welcome')}
                         />
                     </motion.div>
                 </motion.div>

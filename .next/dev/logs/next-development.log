@@ -1,45 +1,19 @@
-[00:00:01.560] Server  LOG     ✓ Ready in 1285ms
-[00:00:02.550] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:01:39.804] Server  LOG     ✓ Compiled in 166ms
-[00:01:58.989] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:11:02.160] Server  LOG     ✓ Compiled in 72ms
-[00:11:17.908] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:13:42.068] Server  LOG     ✓ Compiled in 65ms
-[00:14:49.618] Server  LOG     ✓ Compiled in 45ms
-[00:14:54.338] Server  LOG     ✓ Compiled in 39ms
-[00:15:01.861] Server  LOG     ✓ Compiled in 28ms
-[00:16:06.738] Server  LOG     ✓ Compiled in 28ms
-[00:18:27.843] Server  LOG     ✓ Compiled in 39ms
-[00:18:30.905] Server  LOG     ✓ Compiled in 30ms
-[00:18:39.854] Server  LOG     ✓ Compiled in 30ms
-[00:18:43.315] Server  LOG     ✓ Compiled in 28ms
-[00:20:58.755] Server  LOG     ✓ Compiled in 65ms
-[00:24:33.372] Server  LOG     ✓ Compiled in 67ms
-[00:25:42.857] Server  LOG     ✓ Compiled in 51ms
-[00:26:19.697] Server  LOG     ✓ Compiled in 32ms
-[00:31:04.996] Server  LOG     ✓ Compiled in 48ms
-[00:34:14.543] Server  LOG     ✓ Compiled in 66ms
-[00:37:27.327] Server  LOG     ✓ Compiled in 49ms
-[00:39:45.443] Server  LOG     ✓ Compiled in 56ms
-[00:40:30.919] Server  LOG     ✓ Compiled in 47ms
-[00:40:40.158] Server  LOG     ✓ Compiled in 56ms
-[00:40:53.906] Server  LOG     ✓ Compiled in 67ms
-[00:41:06.201] Server  LOG     ✓ Compiled in 45ms
-[00:41:08.229] Server  LOG     ✓ Compiled in 43ms
-[00:41:16.214] Server  LOG     ✓ Compiled in 45ms
-[00:41:28.113] Server  LOG     ✓ Compiled in 46ms
-[00:41:44.096] Server  LOG     ✓ Compiled in 67ms
-[00:49:51.173] Server  LOG     ✓ Compiled in 65ms
-[00:49:53.197] Server  LOG     ✓ Compiled in 69ms
-[00:50:12.216] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:52:49.246] Server  LOG     ✓ Compiled in 76ms
-[00:54:52.763] Server  LOG     ✓ Compiled in 65ms
-[00:56:04.299] Server  LOG     ✓ Compiled in 214ms
-[00:56:25.521] Server  LOG     ✓ Compiled in 128ms
-[00:57:33.286] Server  LOG     ✓ Compiled in 72ms
-[01:10:07.553] Server  LOG     ✓ Compiled in 71ms
-[01:10:26.702] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:15:14.407] Server  LOG     ✓ Compiled in 75ms
-[01:18:12.082] Server  LOG     ✓ Compiled in 68ms
-[01:20:10.242] Server  LOG     ✓ Compiled in 43ms
-[01:21:37.481] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:01.450] Server  WARN    ⚠ Turbopack's filesystem cache has been deleted because we previously detected an internal error in Turbopack. Builds or page loads may be slower as a result.
+[00:00:01.573] Server  LOG     ✓ Ready in 1294ms
+[00:00:48.272] Server  WARN    ⚠ Cross origin request detected from 10.0.0.185 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+[00:00:48.300] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:48.385] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:04:06.214] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:06:45.022] Server  LOG     ✓ Compiled in 211ms
+[00:09:35.774] Server  LOG     ✓ Compiled in 515ms
+[00:09:56.106] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:11:19.015] Server  LOG     ✓ Compiled in 141ms
+[00:11:30.155] Server  LOG     ✓ Compiled in 54ms
+[00:11:31.584] Server  LOG     ✓ Compiled in 53ms
+[00:13:15.997] Server  LOG     ✓ Compiled in 151ms
+[00:20:11.414] Server  LOG     ✓ Compiled in 92ms
+[00:20:38.857] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:22:02.164] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:22:48.469] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:26:09.109] Server  LOG     ✓ Compiled in 51ms

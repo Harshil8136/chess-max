@@ -1,7 +1,0 @@
-{
-  "/_global-error/page": "app/_global-error/page.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/api/og/route": "app-edge-has-no-entrypoint",
-  "/icon.svg/route": "app/icon.svg/route.js",
-  "/page": "app/page.js"
-}

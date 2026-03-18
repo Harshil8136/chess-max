@@ -1,15 +1,13 @@
-[00:00:01.439] Server  LOG     ✓ Ready in 1190ms
-[00:00:01.441] Server  WARN    ⚠ Cross origin request detected from 10.0.0.185 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+[00:00:01.483] Server  LOG     ✓ Ready in 1236ms
+[00:00:04.888] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:04:26.241] Server  LOG     ✓ Compiled in 347ms
+[00:07:00.316] Server  WARN    ⚠ Cross origin request detected from 10.0.0.185 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
 Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
-[00:00:01.981] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:16.805] Server  LOG     ✓ Compiled in 672ms
-[00:00:50.384] Server  LOG     ✓ Compiled in 132ms
-[00:03:53.644] Server  LOG     ✓ Compiled in 76ms
-[00:04:10.858] Server  LOG     ✓ Compiled in 103ms
-[00:04:34.937] Server  LOG     ✓ Compiled in 41ms
-[00:05:30.585] Server  LOG     ✓ Compiled in 44ms
-[00:09:27.814] Server  LOG     ✓ Compiled in 58ms
-[00:10:13.879] Server  LOG     ✓ Compiled in 48ms
-[00:10:53.093] Server  LOG     ✓ Compiled in 61ms
-[00:11:19.478] Server  LOG     ✓ Compiled in 62ms
-[00:11:47.353] Server  LOG     ✓ Compiled in 49ms
+[00:07:00.342] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:09:18.876] Server  LOG     ✓ Compiled in 106ms
+[00:09:20.906] Server  LOG     ✓ Compiled in 100ms
+[00:16:10.072] Server  LOG     ✓ Compiled in 151ms
+[00:16:12.033] Server  LOG     ✓ Compiled in 87ms
+[00:19:28.163] Server  LOG     ✓ Compiled in 472ms
+[00:19:45.745] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:20:52.504] Server  LOG     ✓ Compiled in 60ms

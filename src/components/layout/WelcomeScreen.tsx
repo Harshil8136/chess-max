@@ -37,8 +37,7 @@ export default function WelcomeScreen({ onPlayNow, onQuickPlay }: WelcomeScreenP
 
     return (
         <div className="relative flex min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden bg-bg-primary px-4 py-12 sm:px-6 lg:px-8 selection:bg-accent-green/30">
-            {/* Ambient Background Glow — wider, softer ellipse */}
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-[70vh]" style={{ background: 'radial-gradient(ellipse 80% 50% at 50% 0%, var(--accent-green-glow), transparent 60%)' }} />
+            {/* Removed Ambient Background Glow to keep it purely solid and crisp */}
             
             <motion.div 
                 variants={containerVars}

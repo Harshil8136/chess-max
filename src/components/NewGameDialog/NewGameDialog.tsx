@@ -44,7 +44,8 @@ export default React.memo(function NewGameDialog({ open, onClose, onStartGame }:
     };
 
     return (
-        <div className={styles.overlay} onClick={onClose}>
+        <div className={styles.overlayContainer}>
+            <div className={styles.overlayBlur} onClick={onClose} />
             <div className={styles.dialog} onClick={(e) => e.stopPropagation()}>
                 <h2 className={styles.title}>New Game</h2>
 

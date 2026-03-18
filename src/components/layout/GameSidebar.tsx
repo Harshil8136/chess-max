@@ -354,6 +354,14 @@ export default function GameSidebar({
             {/* ── Header: Actions + Tab Control ───────────────────────────── */}
             <header className="flex flex-col shrink-0 gap-3 border-b border-[#32302c] bg-[#21201e] px-4 py-3">
 
+                {/* Branding Logo */}
+                <div className="flex justify-center items-center gap-2 pb-1">
+                    <span className="text-xl">♟️</span>
+                    <span className="text-lg font-extrabold text-[#e8e6e3] tracking-tight">
+                        Chess <span className="text-[var(--accent-green)]">Max</span>
+                    </span>
+                </div>
+
                 {/* Global Action Buttons */}
                 <nav className="flex w-full gap-1.5 sm:gap-2" aria-label="Game actions">
                     {NAV_BUTTONS.map(({ id, label, Icon, action }) => (

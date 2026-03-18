@@ -9,10 +9,10 @@ import { Square } from 'chess.js';
 import { PlayerColor } from '@/types/chess';
 import { motion } from 'framer-motion';
 
-import LayoutHeader from './LayoutHeader';
 import WelcomeScreen from './WelcomeScreen';
 import LoadingScreen from './LoadingScreen';
 import GameSidebar from './GameSidebar';
+import { Home } from 'lucide-react'; // Added for floating mobile home button
 import GameBoard from '@/components/GameBoard/GameBoard';
 import EvalBar from '@/components/EvalBar/EvalBar';
 import PlayerBar from '@/components/PlayerBar/PlayerBar';
@@ -328,7 +328,6 @@ export default function GameLayout() {
     if (appState === 'loading') {
         return (
             <div className="min-h-[100dvh] flex flex-col items-center justify-center bg-bg-primary">
-                <LayoutHeader />
                 <main className="flex flex-col items-center justify-center flex-1 w-full">
                     <LoadingScreen />
                 </main>
@@ -345,9 +344,24 @@ export default function GameLayout() {
 
     return (
         <div className="min-h-[100dvh] flex flex-col overflow-hidden relative">
-            <LayoutHeader />
+            
+            {/* Mobile Branding & Home Button (Floats above board) */}
+            <div className="lg:hidden absolute top-4 left-4 z-50 flex items-center gap-2 drop-shadow-md">
+                <span className="text-xl">♟️</span>
+                <span className="text-lg font-extrabold text-[#e8e6e3] tracking-tight">
+                    Chess <span className="text-[var(--accent-green)]">Max</span>
+                </span>
+            </div>
+            <button
+                onClick={() => setAppState('welcome')}
+                className="lg:hidden absolute top-2 right-4 z-50 flex items-center justify-center size-10 rounded-full bg-black/40 border border-white/10 text-white backdrop-blur-md hover:bg-black/60 transition-colors shadow-lg"
+                aria-label="Back to Home"
+            >
+                <Home size={18} />
+            </button>
 
-            <main className="flex-1 flex justify-center items-stretch p-4 md:p-8 gap-4 md:gap-8 overflow-y-auto overflow-x-hidden relative z-10 max-lg:flex-col max-lg:items-center max-lg:max-h-full">
+            {/* pt-16 on mobile gives space for the floating header, perfectly centered on desktop */}
+            <main className="flex-1 flex justify-center items-center p-4 pt-16 lg:p-4 gap-4 md:gap-8 overflow-y-auto overflow-x-hidden relative z-10 max-lg:flex-col max-lg:items-center max-lg:max-h-full">
                 <motion.div 
                     className="flex gap-2 md:gap-3 items-stretch justify-center w-full max-w-[1240px] shrink-0 max-lg:w-full h-fit flex-1"
                     initial={{ opacity: 0, y: 20 }}

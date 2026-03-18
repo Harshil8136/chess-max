@@ -312,14 +312,19 @@ export default React.memo(function GameBoard({
                                 layoutId={pieceKey} // We use pieceKey so it transitions from the old position on re-render if we had stable IDs...
                                 layout
                                 initial={false}
-                                transition={{ type: "spring", stiffness: 400, damping: 35 }}
+                                transition={{ type: "spring", stiffness: 450, damping: 30, mass: 0.8 }}
                                 className={`${styles.pieceContainer} ${isDragging ? styles.dragging : ''}`}
                                 drag={allowInteraction}
                                 dragSnapToOrigin
-                                dragElastic={0.1}
+                                dragElastic={0.15}
                                 onDragStart={() => setDraggingPieceId(pieceKey)}
                                 onDragEnd={(e, info) => handleDragEnd(e, info, sq.squareName, piece)}
-                                whileDrag={{ scale: 1.25, rotate: 2, cursor: 'grabbing' }}
+                                whileDrag={{ 
+                                    scale: 1.35, 
+                                    rotate: 2, 
+                                    filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.6))',
+                                    cursor: 'grabbing' 
+                                }}
                                 onClick={(_e) => {
                                     // Let square click handle it, but prevent bubbling issues if needed
                                 }}

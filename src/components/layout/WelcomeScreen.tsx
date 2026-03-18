@@ -36,9 +36,9 @@ export default function WelcomeScreen({ onPlayNow, onQuickPlay }: WelcomeScreenP
     };
 
     return (
-        <div className="relative flex min-h-[100dvh] w-full flex-col items-center justify-center overflow-x-hidden bg-[#0a0a0c] px-4 py-12 selection:bg-[#81b64c]/30 sm:px-6 lg:px-8">
+        <div className="relative flex min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden bg-bg-primary px-4 py-12 sm:px-6 lg:px-8 selection:bg-accent-green/30">
             {/* Ambient Background Glow — wider, softer ellipse */}
-            <div className="absolute inset-x-0 top-0 h-[70vh] pointer-events-none" style={{ background: 'radial-gradient(ellipse 80% 50% at 50% 0%, rgba(129,182,76,0.08), transparent 60%)' }} />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-[70vh]" style={{ background: 'radial-gradient(ellipse 80% 50% at 50% 0%, var(--accent-green-glow), transparent 60%)' }} />
             
             <motion.div 
                 variants={containerVars}
@@ -49,26 +49,26 @@ export default function WelcomeScreen({ onPlayNow, onQuickPlay }: WelcomeScreenP
                 {/* ─── Hero Section ─── */}
                 <motion.div variants={itemVars} className="flex flex-col items-center gap-6 text-center">
                     {/* Stockfish Badge */}
-                    <div className="inline-flex items-center gap-2 rounded-full border border-[#81b64c]/20 bg-[#81b64c]/10 px-4 py-1.5 backdrop-blur-md">
-                        <Sparkles className="size-4 text-[#81b64c]" />
-                        <span className="text-xs font-semibold tracking-wider text-[#81b64c] uppercase">Powered by Stockfish 16.1 WASM</span>
+                    <div className="inline-flex items-center gap-2 rounded-full border border-accent-green/20 bg-accent-green/10 px-4 py-1.5 backdrop-blur-md">
+                        <Sparkles className="size-4 text-accent-green" />
+                        <span className="text-xs font-semibold tracking-wider text-accent-green uppercase">Powered by Stockfish 16.1 WASM</span>
                     </div>
 
-                    {/* Hero Headline — fluid clamp, no text-balance */}
+                    {/* Hero Headline */}
                     <h1
-                        className="max-w-5xl font-extrabold text-white leading-[1.05]"
+                        className="max-w-5xl text-balance font-extrabold text-text-primary leading-[1.05]"
                         style={{ fontSize: 'clamp(2.75rem, 8vw, 7rem)', letterSpacing: '-0.04em' }}
                     >
                         Master the board.{' '}
                         <br />
-                        <span className="bg-gradient-to-r from-[#81b64c] via-[#a3d160] to-[#81b64c] bg-clip-text text-transparent">
+                        <span className="bg-gradient-to-r from-accent-green via-[#a3d160] to-accent-green bg-clip-text text-transparent">
                             Master your mind.
                         </span>
                     </h1>
                     
                     {/* Subtitle */}
-                    <p className="max-w-xl text-center text-lg font-medium text-white/40 sm:text-xl" style={{ lineHeight: 1.7 }}>
-                        Challenge the world's most powerful engine, flawlessly integrated into a premium, blazing-fast experience. No ads. Just beautiful chess.
+                    <p className="max-w-xl text-balance text-center text-lg font-medium text-text-secondary sm:text-xl" style={{ lineHeight: 1.7 }}>
+                        Challenge the world's most powerful engine, flawlessly integrated into a premium, fast experience. No ads. Just beautiful chess.
                     </p>
                 </motion.div>
 
@@ -78,24 +78,24 @@ export default function WelcomeScreen({ onPlayNow, onQuickPlay }: WelcomeScreenP
                     {/* Primary — Custom Match (Span 8) */}
                     <button 
                         onClick={onPlayNow}
-                        className="group relative col-span-1 block w-full outline-none md:col-span-8"
+                        className="group relative col-span-1 block w-full outline-none focus-visible:ring-2 focus-visible:ring-accent-green focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary rounded-[2rem] md:col-span-8 active:scale-[0.98] transition-all duration-200"
                     >
-                        <div className="flex h-full w-full min-h-[200px] flex-col items-start justify-center overflow-hidden rounded-[2rem] border border-white/[0.07] bg-white/[0.02] p-6 text-left transition-all duration-300 group-hover:border-[#81b64c]/40 group-hover:bg-white/[0.04] group-hover:shadow-2xl group-hover:shadow-[#81b64c]/10 sm:p-8 lg:flex-row lg:items-center lg:p-10">
+                        <div className="flex h-full min-h-[220px] w-full flex-col items-start justify-center overflow-hidden rounded-[2rem] border border-glass-border bg-glass-bg backdrop-blur-md p-6 text-left transition-all duration-300 group-hover:border-accent-green/40 group-hover:bg-bg-elevated/60 group-hover:shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_40px_rgba(129,182,76,0.15)] sm:p-8 lg:flex-row lg:items-center lg:p-10">
                             {/* Hover glow orb */}
-                            <div className="absolute -right-40 -top-40 size-80 rounded-full bg-[#81b64c]/10 blur-[80px] transition-transform duration-700 group-hover:scale-150 group-hover:bg-[#81b64c]/20" />
+                            <div className="absolute -right-40 -top-40 size-80 rounded-full bg-accent-green/10 blur-[80px] transition-transform duration-700 group-hover:scale-150 group-hover:bg-accent-green/20" />
                             
                             <div className="z-10 mb-8 flex w-full flex-col lg:mb-0 lg:max-w-md">
-                                <div className="mb-6 flex size-14 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/5 shadow-inner">
-                                    <Swords className="size-7 text-white" />
+                                <div className="mb-6 flex size-14 shrink-0 items-center justify-center rounded-2xl border border-border-color bg-bg-surface shadow-inner transition-colors duration-300 group-hover:bg-bg-hover group-hover:border-accent-green/30">
+                                    <Swords className="size-7 text-text-primary" />
                                 </div>
-                                <h3 className="mb-3 text-3xl font-semibold tracking-tight text-white lg:text-4xl">Custom Match</h3>
-                                <p className="text-base text-white/45 leading-relaxed">
+                                <h3 className="mb-3 text-3xl font-semibold tracking-tight text-text-primary lg:text-4xl">Custom Match</h3>
+                                <p className="text-base text-text-secondary leading-relaxed">
                                     Set custom time controls, choose perfectly matched AI opponents, or play a friend locally.
                                 </p>
                             </div>
                             
                             {/* Arrow CTA */}
-                            <div className="z-10 flex size-14 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 backdrop-blur-md transition-all duration-300 group-hover:bg-white group-hover:text-black group-hover:scale-110 lg:self-center">
+                            <div className="z-10 flex size-14 shrink-0 items-center justify-center rounded-full border border-border-color bg-bg-surface backdrop-blur-md transition-all duration-300 group-hover:bg-text-primary group-hover:text-bg-primary group-hover:scale-110 lg:ml-auto">
                                 <ArrowRight className="size-6 transition-transform duration-300 group-hover:translate-x-1" />
                             </div>
                         </div>
@@ -104,24 +104,24 @@ export default function WelcomeScreen({ onPlayNow, onQuickPlay }: WelcomeScreenP
                     {/* Secondary — Play Stockfish (Span 4) */}
                     <button 
                         onClick={() => handleQuickPlay(4)}
-                        className="group relative col-span-1 block w-full outline-none md:col-span-4"
+                        className="group relative col-span-1 block w-full outline-none focus-visible:ring-2 focus-visible:ring-accent-green focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary rounded-[2rem] md:col-span-4 active:scale-[0.98] transition-all duration-200"
                     >
-                        <div className="flex h-full w-full flex-col justify-center overflow-hidden rounded-[2rem] border border-[#81b64c]/25 bg-[#81b64c]/[0.07] p-6 text-left transition-all duration-300 group-hover:border-[#81b64c]/40 group-hover:bg-[#81b64c]/10 group-hover:shadow-2xl group-hover:shadow-[#81b64c]/10 sm:p-8">
+                        <div className="flex h-full min-h-[220px] w-full flex-col justify-center overflow-hidden rounded-[2rem] border border-accent-green/30 bg-accent-green/10 p-6 text-left transition-all duration-300 group-hover:border-accent-green/50 group-hover:bg-accent-green/15 group-hover:shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_40px_rgba(129,182,76,0.15)] sm:p-8">
                             {/* Green glow orb */}
-                            <div className="absolute -right-24 -top-24 size-48 rounded-full bg-[#81b64c]/20 blur-[60px] transition-transform duration-700 group-hover:scale-150" />
+                            <div className="absolute -right-24 -top-24 size-48 rounded-full bg-accent-green/20 blur-[60px] transition-transform duration-700 group-hover:scale-150" />
                             
-                            <Bot className="relative z-10 mb-8 size-10 text-[#81b64c]" />
+                            <Bot className="relative z-10 mb-8 size-10 text-accent-green transition-transform duration-300 group-hover:scale-110" />
                             <div className="relative z-10">
-                                <h3 className="mb-2 text-2xl font-semibold tracking-tight text-white">Play Stockfish</h3>
+                                <h3 className="mb-2 text-2xl font-semibold tracking-tight text-text-primary">Play Stockfish</h3>
                                 <div className="flex items-center gap-2">
-                                    <span className="rounded-md bg-[#81b64c]/20 px-2.5 py-1 text-xs font-semibold tracking-wide text-[#81b64c]">10 MIN</span>
-                                    <span className="text-sm font-medium text-white/40">ELO 1200</span>
+                                    <span className="rounded-md bg-accent-green/20 px-2.5 py-1 text-xs font-semibold tracking-wide text-accent-green">10 MIN</span>
+                                    <span className="text-sm font-medium text-text-muted">ELO 1200</span>
                                 </div>
                             </div>
                             
                             {/* Hover play arrow */}
-                            <div className="absolute bottom-6 right-6 z-20 flex size-10 scale-50 items-center justify-center rounded-full bg-[#81b64c] opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100 sm:bottom-8 sm:right-8">
-                                <ArrowRight className="size-4 text-white" />
+                            <div className="absolute bottom-6 right-6 z-20 flex size-10 items-center justify-center rounded-full bg-accent-green text-bg-primary opacity-0 scale-50 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100 sm:bottom-8 sm:right-8">
+                                <ArrowRight className="size-4" />
                             </div>
                         </div>
                     </button>
@@ -139,17 +139,17 @@ export default function WelcomeScreen({ onPlayNow, onQuickPlay }: WelcomeScreenP
                             <button
                                 key={level.title}
                                 onClick={() => handleQuickPlay(level.index)}
-                                className="group col-span-1 block w-full outline-none"
+                                className="group col-span-1 block w-full outline-none focus-visible:ring-2 focus-visible:ring-accent-green focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary rounded-3xl active:scale-[0.98] transition-all duration-200"
                             >
-                                <div className="relative flex h-full w-full items-center gap-4 overflow-hidden rounded-3xl border border-white/[0.07] bg-white/[0.02] p-5 text-left transition-all duration-300 group-hover:border-[#81b64c]/30 group-hover:bg-white/[0.04] lg:p-6">
+                                <div className="relative flex h-full w-full items-center gap-4 overflow-hidden rounded-3xl border border-glass-border bg-glass-bg backdrop-blur-md p-5 text-left transition-all duration-300 group-hover:border-accent-green/30 group-hover:bg-bg-elevated/60 lg:p-6">
                                     {/* Hover gradient reveal */}
-                                    <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#81b64c]/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                                    <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-white/[0.07] bg-white/5 transition-all duration-300 group-hover:border-[#81b64c]/20 group-hover:bg-[#81b64c]/5">
-                                        <Icon className="size-5 text-white/50 transition-colors duration-300 group-hover:text-[#81b64c]" />
+                                    <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-accent-green/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                                    <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-border-color bg-bg-surface transition-all duration-300 group-hover:border-accent-green/30 group-hover:bg-accent-green/10">
+                                        <Icon className="size-5 text-text-muted transition-colors duration-300 group-hover:text-accent-green" />
                                     </div>
                                     <div className="flex flex-col text-left">
-                                        <span className="mb-0.5 text-base font-semibold tracking-tight text-white">{level.title}</span>
-                                        <span className="text-sm font-medium text-[#81b64c]">{level.desc}</span>
+                                        <span className="mb-0.5 text-base font-semibold tracking-tight text-text-primary">{level.title}</span>
+                                        <span className="text-sm font-medium text-accent-green">{level.desc}</span>
                                     </div>
                                 </div>
                             </button>
@@ -158,10 +158,10 @@ export default function WelcomeScreen({ onPlayNow, onQuickPlay }: WelcomeScreenP
                 </motion.div>
                 
                 {/* ─── Footer Feature Badges ─── */}
-                <motion.div variants={itemVars} className="mt-12 flex w-full flex-wrap items-center justify-center gap-6 border-t border-white/5 pt-10 text-sm font-medium text-white/35">
+                <motion.div variants={itemVars} className="mt-12 flex w-full flex-wrap items-center justify-center gap-6 border-t border-border-color pt-10 text-sm font-medium text-text-muted">
                     <span className="flex items-center gap-2"><WifiOff className="size-4" /> Offline Ready</span>
                     <span className="flex items-center gap-2"><LineChart className="size-4" /> Deep Analysis</span>
-                    <span className="hidden items-center gap-2 sm:flex"><Palette className="size-4" /> 35 Piece Sets</span>
+                    <span className="hidden items-center gap-2 sm:flex"><Palette className="size-4" /> 16 Custom Themes</span>
                 </motion.div>
             </motion.div>
         </div>

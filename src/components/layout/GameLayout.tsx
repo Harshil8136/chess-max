@@ -9,8 +9,6 @@ import { Square } from 'chess.js';
 import { PlayerColor } from '@/types/chess';
 import { motion } from 'framer-motion';
 
-import styles from '@/app/page.module.css';
-
 import LayoutHeader from './LayoutHeader';
 import WelcomeScreen from './WelcomeScreen';
 import LoadingScreen from './LoadingScreen';
@@ -311,7 +309,7 @@ export default function GameLayout() {
 
     if (appState === 'welcome') {
         return (
-            <div className={styles.welcomePageWrapper}>
+            <div className="min-h-[100dvh] w-full overflow-hidden bg-bg-primary">
                 <WelcomeScreen 
                     onPlayNow={() => setShowNewGameDialog(true)} 
                     onQuickPlay={(settings) => {
@@ -329,9 +327,9 @@ export default function GameLayout() {
 
     if (appState === 'loading') {
         return (
-            <div className={styles.page}>
+            <div className="min-h-[100dvh] flex flex-col items-center justify-center bg-bg-primary">
                 <LayoutHeader />
-                <main className={styles.main}>
+                <main className="flex flex-col items-center justify-center flex-1 w-full">
                     <LoadingScreen />
                 </main>
             </div>
@@ -368,9 +366,9 @@ export default function GameLayout() {
                     )}
 
                     {/* Arena Container */}
-                    <div className="flex flex-col w-[min(80dvh,850px)] max-w-[calc(100vw-400px)] max-lg:max-w-none transition-all max-lg:w-[min(85vw,65dvh)] max-sm:w-[min(100vw-16px,100dvh-200px)]">
+                    <div className="flex flex-col w-[min(80dvh,850px)] max-w-[calc(100vw-400px)] max-lg:max-w-none transition-all max-lg:w-[min(85vw,65dvh)] max-sm:w-[min(100vw-16px,100dvh-200px)] relative rounded-xl overflow-hidden shadow-2xl border border-white/10 [backdrop-filter:blur(24px)] [-webkit-backdrop-filter:blur(24px)] bg-black/20">
                         {/* Top Player Bar */}
-                        <div className="w-full relative z-10 bg-[#262522] rounded-t-md">
+                        <div className="w-full relative z-10 bg-black/40 border-b border-white/5 backdrop-blur-md">
                             <PlayerBar
                                 name={topIsBot ? `Stockfish (${eloLevel.name})` : 'You'}
                                 elo={topIsBot ? eloLevel.elo : undefined}
@@ -388,7 +386,7 @@ export default function GameLayout() {
                         </div>
 
                         {/* Chess Board */}
-                        <div className="w-full aspect-square relative bg-[#302e2b] z-0">
+                        <div className="w-full aspect-square relative z-0 shadow-inner">
                             <GameBoard
                                 fen={fen}
                                 boardFlipped={boardFlipped}
@@ -413,7 +411,7 @@ export default function GameLayout() {
                         </div>
 
                         {/* Bottom Player Bar */}
-                        <div className="w-full relative z-10 bg-[#262522] rounded-b-md">
+                        <div className="w-full relative z-10 bg-black/40 border-t border-white/5 backdrop-blur-md">
                             <PlayerBar
                                 name={bottomIsBot ? `Stockfish (${eloLevel.name})` : 'You'}
                                 elo={bottomIsBot ? eloLevel.elo : undefined}

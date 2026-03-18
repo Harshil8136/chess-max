@@ -73,12 +73,13 @@ function NavButton({ label, Icon, onClick }: { label: string; Icon: LucideIcon; 
         <button
             onClick={onClick}
             aria-label={label}
+            title={label}
             className={`
-                group flex-1 min-w-0 flex flex-col items-center justify-center gap-1.5 py-2.5
+                group flex-1 min-w-0 flex items-center justify-center py-2.5
                 rounded-xl bg-[#2a2825] 
                 border-x border-[#ffffff05] border-t border-[#ffffff15] border-b border-[#00000060]
                 shadow-[0_2px_4px_rgba(0,0,0,0.4)]
-                text-[10px] sm:text-[11px] font-bold text-[#989795]
+                text-[#989795]
                 hover:bg-[#363431] hover:text-white hover:-translate-y-0.5 hover:shadow-[0_4px_8px_rgba(0,0,0,0.5)]
                 active:translate-y-px active:shadow-none active:bg-[#201e1c]
                 active:border-t-[#00000060] active:border-b-[#ffffff15]
@@ -86,8 +87,7 @@ function NavButton({ label, Icon, onClick }: { label: string; Icon: LucideIcon; 
                 transition-all duration-150 ease-out
             `}
         >
-            <Icon size={17} strokeWidth={2} className="shrink-0 transition-transform duration-150 group-hover:scale-110" />
-            <span className="truncate w-full text-center px-0.5">{label}</span>
+            <Icon size={18} strokeWidth={2.5} className="shrink-0 transition-transform duration-150 group-hover:scale-110" />
         </button>
     );
 }
@@ -352,7 +352,7 @@ export default function GameSidebar({
         <div className="flex flex-col w-full h-full min-h-0">
 
             {/* ── Header: Actions + Tab Control ───────────────────────────── */}
-            <header className="flex flex-col shrink-0 gap-4 border-b border-[#32302c] bg-[#21201e] px-4 py-5">
+            <header className="flex flex-col shrink-0 gap-3 border-b border-[#32302c] bg-[#21201e] px-4 py-3">
 
                 {/* Global Action Buttons */}
                 <nav className="flex w-full gap-1.5 sm:gap-2" aria-label="Game actions">

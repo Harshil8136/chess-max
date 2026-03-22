@@ -23,6 +23,7 @@ export type EloLevel = {
     elo: number;
     name: string;
     description: string;
+    avatar?: string;
     skillLevel: number;
     depth?: number;
     moveTime: number;

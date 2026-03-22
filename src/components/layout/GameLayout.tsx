@@ -19,7 +19,6 @@ import PlayerBar from '@/components/PlayerBar/PlayerBar';
 import NewGameDialog from '@/components/NewGameDialog/NewGameDialog';
 import GameOverModal from '@/components/GameOverModal/GameOverModal';
 import SettingsModal from '@/components/SettingsModal/SettingsModal';
-import PromotionDialog from '@/components/PromotionDialog/PromotionDialog';
 import GameArchiveBrowser from '@/components/GameArchiveBrowser/GameArchiveBrowser';
 import FenImporter from '@/components/FenImporter/FenImporter';
 import KeyboardShortcutsModal from '@/components/KeyboardShortcutsModal/KeyboardShortcutsModal';
@@ -345,6 +344,13 @@ export default function GameLayout() {
     return (
         <div className="min-h-[100dvh] flex flex-col overflow-hidden relative">
             
+            {/* Ambient Animated Background Layer */}
+            <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden opacity-60">
+                <div className="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] rounded-full bg-[var(--accent-green)]/15 blur-[120px] mix-blend-screen animate-pulse" style={{ animationDuration: '8s' }} />
+                <div className="absolute top-[40%] -right-[10%] w-[50%] h-[50%] rounded-full bg-[var(--accent-purple,var(--accent-blue))]/15 blur-[140px] mix-blend-screen animate-pulse" style={{ animationDuration: '12s', animationDelay: '2s' }} />
+                <div className="absolute -bottom-[20%] left-[15%] w-[50%] h-[50%] rounded-full bg-[var(--accent-orange,var(--accent-red))]/10 blur-[120px] mix-blend-screen animate-pulse" style={{ animationDuration: '10s', animationDelay: '4s' }} />
+            </div>
+
             {/* Mobile Branding & Home Button (Floats above board) */}
             <div className="lg:hidden absolute top-4 left-4 z-50 flex items-center gap-2 drop-shadow-md">
                 <span className="text-xl">♟️</span>
@@ -380,7 +386,9 @@ export default function GameLayout() {
                     )}
 
                     {/* Arena Container */}
-                    <div className="flex flex-col w-[min(80dvh,850px)] max-w-[calc(100vw-400px)] max-lg:max-w-none transition-all max-lg:w-[min(85vw,65dvh)] max-sm:w-[min(100vw-16px,100dvh-200px)] relative rounded-xl overflow-hidden shadow-2xl border border-white/10 [backdrop-filter:blur(24px)] [-webkit-backdrop-filter:blur(24px)] bg-black/20">
+                    <div className="flex flex-col w-[min(80dvh,850px)] max-w-[calc(100vw-400px)] max-lg:max-w-none transition-all max-lg:w-[min(85vw,65dvh)] max-sm:w-[min(100vw-16px,100dvh-200px)] relative rounded-2xl overflow-hidden shadow-[var(--shadow-lg,0_8px_32px_rgba(0,0,0,0.5))] border border-[var(--glass-border)] [backdrop-filter:blur(var(--glass-blur,24px))] [-webkit-backdrop-filter:blur(var(--glass-blur,24px))] bg-[var(--glass-bg)] ring-1 ring-white/5 relative group">
+                        {/* Subtle theme glow for Arena */}
+                        <div className="pointer-events-none absolute inset-0 rounded-2xl shadow-[var(--shadow-glow-green,none)] opacity-50 transition-opacity duration-700 group-hover:opacity-100 z-10" />
                         {/* Top Player Bar */}
                         <div className="w-full relative z-10 bg-black/40 border-b border-white/5 backdrop-blur-md">
                             <PlayerBar
@@ -417,6 +425,9 @@ export default function GameLayout() {
                                 moveClassification={moveClassification}
                                 legalTargetSquares={legalTargetSquares}
                                 pendingPremove={pendingPremove}
+                                pendingPromotion={pendingPromotion}
+                                onPromotionSelect={handlePromotionSelect}
+                                onPromotionCancel={() => setPendingPromotion(null)}
                                 onPieceDrop={handlePieceDrop}
                                 onSquareClick={handleSquareClick}
                                 boardMatrix={boardMatrix}
@@ -445,7 +456,7 @@ export default function GameLayout() {
 
                     {/* Side Panel (Consumes Context automatically) */}
                     <motion.div 
-                        className="w-[clamp(320px,30vw,450px)] flex flex-col shrink-0 bg-[#262522] rounded-md max-h-[90dvh] overflow-hidden max-lg:hidden shadow-lg border border-white/5"
+                        className="w-[clamp(320px,30vw,450px)] flex flex-col shrink-0 bg-[var(--glass-bg)] [backdrop-filter:blur(var(--glass-blur,24px))] [-webkit-backdrop-filter:blur(var(--glass-blur,24px))] rounded-2xl max-h-[90dvh] overflow-hidden max-lg:hidden shadow-[var(--shadow-lg,0_8px_32px_rgba(0,0,0,0.4))] border border-[var(--glass-border)] ring-1 ring-white/5 relative group"
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
@@ -486,15 +497,6 @@ export default function GameLayout() {
                 open={showSettings}
                 onClose={() => setShowSettings(false)}
             />
-
-            {/* Promotion Dialog */}
-            {pendingPromotion && (
-                <PromotionDialog
-                    color={playerColor === 'w' ? 'w' : 'b'}
-                    onSelect={handlePromotionSelect}
-                    onCancel={() => setPendingPromotion(null)}
-                />
-            )}
 
             {/* Game Archive Browser */}
             <GameArchiveBrowser 

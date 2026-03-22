@@ -76,14 +76,14 @@ function NavButton({ label, Icon, onClick }: { label: string; Icon: LucideIcon; 
             title={label}
             className={`
                 group flex-1 min-w-0 flex items-center justify-center py-2.5
-                rounded-xl bg-[#2a2825] 
-                border-x border-[#ffffff05] border-t border-[#ffffff15] border-b border-[#00000060]
+                rounded-xl bg-white/5 
+                border-x border-white/5 border-t border-white/10 border-b border-black/40
                 shadow-[0_2px_4px_rgba(0,0,0,0.4)]
-                text-[#989795]
-                hover:bg-[#363431] hover:text-white hover:-translate-y-0.5 hover:shadow-[0_4px_8px_rgba(0,0,0,0.5)]
-                active:translate-y-px active:shadow-none active:bg-[#201e1c]
-                active:border-t-[#00000060] active:border-b-[#ffffff15]
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#739552]/70
+                text-white/60
+                hover:bg-white/10 hover:text-white hover:-translate-y-0.5 hover:shadow-[0_4px_8px_rgba(0,0,0,0.5)]
+                active:translate-y-px active:shadow-none active:bg-black/20
+                active:border-t-black/40 active:border-b-white/10
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-green)]/70
                 transition-all duration-150 ease-out
             `}
         >
@@ -103,10 +103,10 @@ function TabButton({ label, isActive, onClick }: { label: string; isActive: bool
             className={`
                 flex-1 flex justify-center py-2 text-[13px] font-bold rounded-full
                 transition-all duration-200
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#739552]/70
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-green)]/70
                 ${isActive
-                    ? 'bg-[#3b3834] text-white shadow-[0_2px_4px_rgba(0,0,0,0.5)] border border-[#484540] border-t-[#5c5953]'
-                    : 'text-[#8a8886] hover:text-[#c4c3c0]'
+                    ? 'bg-white/10 text-white shadow-[0_2px_4px_rgba(0,0,0,0.5)] border border-white/10 border-t-white/20'
+                    : 'text-white/60 hover:text-white/90'
                 }
             `}
         >
@@ -177,9 +177,9 @@ function OpeningExplorerPanel({ openingName, history }: { openingName?: string |
     ];
 
     return (
-        <div className="flex flex-col h-full text-[#989795] overflow-y-auto pb-safe-offset-4 bg-[#1b1a18]">
+        <div className="flex flex-col h-full text-white/60 overflow-y-auto pb-safe-offset-4 bg-transparent">
             {/* Hero Banner Area */}
-            <div className="relative px-5 py-6 bg-gradient-to-b from-[#2a2826] to-[#1b1a18] border-b border-[#3b3834] shadow-sm z-10 shrink-0">
+            <div className="relative px-5 py-6 bg-gradient-to-b from-black/40 to-black/20 border-b border-[var(--border-color)] shadow-sm z-10 shrink-0">
                 <div className="flex items-center gap-2 mb-2">
                     <div className="w-6 h-6 rounded bg-[#312e2b] border border-[#3b3834] shadow-inner flex items-center justify-center">
                         <BookOpen size={14} className="text-[#a5a4a1]" />
@@ -352,12 +352,12 @@ export default function GameSidebar({
         <div className="flex flex-col w-full h-full min-h-0">
 
             {/* ── Header: Actions + Tab Control ───────────────────────────── */}
-            <header className="flex flex-col shrink-0 gap-3 border-b border-[#32302c] bg-[#21201e] px-4 py-3">
+            <header className="flex flex-col shrink-0 gap-3 border-b border-[var(--border-color)] bg-black/20 px-4 py-3">
 
                 {/* Branding Logo */}
                 <div className="flex justify-center items-center gap-2 pb-1">
                     <span className="text-xl">♟️</span>
-                    <span className="text-lg font-extrabold text-[#e8e6e3] tracking-tight">
+                    <span className="text-lg font-extrabold text-white drop-shadow-sm tracking-tight">
                         Chess <span className="text-[var(--accent-green)]">Max</span>
                     </span>
                 </div>
@@ -381,7 +381,7 @@ export default function GameSidebar({
                 <div
                     role="tablist"
                     aria-label="Sidebar sections"
-                    className="flex w-full bg-[#181715] p-1.5 rounded-full border border-black/50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)]"
+                    className="flex w-full bg-black/40 p-1.5 rounded-full border border-black/50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)]"
                 >
                     {TABS.map(tab => (
                         <TabButton

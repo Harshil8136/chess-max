@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X, Palette, Volume2, Monitor, Gamepad2, Sun, Moon } from 'lucide-react';
+import { X, Palette, Volume2, Monitor, Gamepad2, Sun, Moon, Gem, Star, Zap, Hexagon } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
 import { useGame } from '@/contexts/GameContext';
 import { PIECE_SETS } from '@/hooks/useSettings';
@@ -85,6 +85,34 @@ export default React.memo(function SettingsModal({ open, onClose }: SettingsModa
                                             <Monitor size={20} />
                                             <span>Stealth</span>
                                         </button>
+                                        <button
+                                            className={`${styles.themeOption} ${theme === 'emerald' ? styles.themeActive : ''}`}
+                                            onClick={() => setTheme('emerald')}
+                                        >
+                                            <Hexagon size={20} />
+                                            <span>Emerald</span>
+                                        </button>
+                                        <button
+                                            className={`${styles.themeOption} ${theme === 'ruby' ? styles.themeActive : ''}`}
+                                            onClick={() => setTheme('ruby')}
+                                        >
+                                            <Gem size={20} />
+                                            <span>Ruby</span>
+                                        </button>
+                                        <button
+                                            className={`${styles.themeOption} ${theme === 'sapphire' ? styles.themeActive : ''}`}
+                                            onClick={() => setTheme('sapphire')}
+                                        >
+                                            <Star size={20} />
+                                            <span>Sapphire</span>
+                                        </button>
+                                        <button
+                                            className={`${styles.themeOption} ${theme === 'cyberpunk' ? styles.themeActive : ''}`}
+                                            onClick={() => setTheme('cyberpunk')}
+                                        >
+                                            <Zap size={20} />
+                                            <span>Cyberpunk</span>
+                                        </button>
                                     </div>
                                 </div>
 
@@ -111,7 +139,7 @@ export default React.memo(function SettingsModal({ open, onClose }: SettingsModa
                                     <div className={styles.settingGroup}>
                                         <div className={styles.settingLabel}>Board Theme</div>
                                         <div className={styles.boardThemeGrid}>
-                                            {['blue', 'green', 'brown', 'purple', 'slate'].map((color) => (
+                                            {['blue', 'green', 'brown', 'purple', 'slate', 'emerald', 'ruby', 'sapphire', 'cyberpunk'].map((color) => (
                                                 <button
                                                     key={color}
                                                     className={`${styles.boardColorOption} ${settings.boardTheme === color ? styles.boardColorActive : ''}`}

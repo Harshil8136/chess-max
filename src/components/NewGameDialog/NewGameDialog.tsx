@@ -98,25 +98,27 @@ export default React.memo(function NewGameDialog({ open, onClose, onStartGame }:
                 </div>
                 )}
 
-                {/* ELO Selection (Only vs Computer) */}
+                {/* AI Personality Selection (Only vs Computer) */}
                 {gameMode === 'vs_computer' && (
                 <div className={styles.section}>
-                    <div className={styles.sectionLabel}>Computer Strength</div>
-                    <div className={styles.eloSection}>
-                        <div className={styles.eloDisplay}>
-                            <span className={styles.eloValue}>{currentElo.elo}</span>
-                            <span className={styles.eloName}>{currentElo.name}</span>
+                    <div className={styles.sectionLabel}>Choose Opponent</div>
+                    <div className={styles.aiSelectorConfig}>
+                        <div className={styles.aiCardsContainer}>
+                            {ELO_LEVELS.map((elo, idx) => (
+                                <button
+                                    key={elo.elo}
+                                    className={`${styles.aiCard} ${eloIndex === idx ? styles.aiCardActive : ''}`}
+                                    onClick={() => setEloIndex(idx)}
+                                >
+                                    <div className={styles.aiAvatar}>{elo.avatar || '🤖'}</div>
+                                    <div className={styles.aiName}>{elo.name}</div>
+                                    <div className={styles.aiElo}>ELO {elo.elo}</div>
+                                </button>
+                            ))}
                         </div>
-                        <input
-                            type="range"
-                            className={styles.eloSlider}
-                            min={0}
-                            max={ELO_LEVELS.length - 1}
-                            step={1}
-                            value={eloIndex}
-                            onChange={(e) => setEloIndex(parseInt(e.target.value))}
-                        />
-                        <div className={styles.eloDesc}>{currentElo.description}</div>
+                        <div className={styles.aiDescContainer}>
+                            <div className={styles.aiDescText}>{currentElo.description}</div>
+                        </div>
                     </div>
                 </div>
                 )}

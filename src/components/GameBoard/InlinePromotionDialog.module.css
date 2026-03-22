@@ -1,0 +1,48 @@
+.overlay {
+    position: absolute;
+    inset: 0;
+    /* Optional: very slight darkening of the board behind it */
+    background: rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+.dialogColumn {
+    position: absolute;
+    width: 12.5%; /* width of one square */
+    height: 50%; /* 4 squares tall */
+    display: flex;
+    flex-direction: column;
+    /* Stack them with no gap, forming a continuous column */
+    background: var(--surface-primary, #1a1a2e);
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+}
+
+/* Because we conditionally use flex-direction: column-reverse in inline styles,
+   the pieces will stack correctly based on board edge */
+
+.pieceSlot {
+    flex: 1; /* split the 50% height into 4 equal 12.5% slots */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.pieceSlot:last-child {
+    border-bottom: none;
+}
+
+.pieceSlot:hover {
+    background: var(--accent-green, #7fa650);
+}
+
+.pieceImg {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));
+}

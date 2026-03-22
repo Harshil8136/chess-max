@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 
-export type ThemeName = 'default' | 'midnight' | 'stealth';
+export type ThemeName = 'default' | 'midnight' | 'stealth' | 'emerald' | 'ruby' | 'sapphire' | 'cyberpunk';
 
 // Obfuscated storage key — base64 of 'chessMax_theme'
 const THEME_STORAGE_KEY = 'Y2hlc3NNYXhfdGhlbWU=';
@@ -11,7 +11,7 @@ export function useTheme() {
     useEffect(() => {
         try {
             const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) as ThemeName;
-            if (savedTheme && ['default', 'midnight', 'stealth'].includes(savedTheme)) {
+            if (savedTheme && ['default', 'midnight', 'stealth', 'emerald', 'ruby', 'sapphire', 'cyberpunk'].includes(savedTheme)) {
                 setThemeState(savedTheme);
                 document.documentElement.setAttribute('data-theme', savedTheme);
             } else {
@@ -37,7 +37,11 @@ export function useTheme() {
             const nextTheme: Record<ThemeName, ThemeName> = {
                 'default': 'midnight',
                 'midnight': 'stealth',
-                'stealth': 'default',
+                'stealth': 'emerald',
+                'emerald': 'ruby',
+                'ruby': 'sapphire',
+                'sapphire': 'cyberpunk',
+                'cyberpunk': 'default',
             };
             const toSet = nextTheme[currentTheme];
             

@@ -9,7 +9,9 @@ interface GameControlsProps {
     canResign: boolean;
     soundEnabled: boolean;
     onNewGame: () => void;
-    onResign: () => void;
+    onResign?: () => void;
+    canUndo?: boolean;
+    onUndo?: () => void;
     onToggleSound: () => void;
     onFlipBoard: () => void;
     onCopyPgn: () => void;
@@ -26,6 +28,8 @@ export default React.memo(function GameControls({
     soundEnabled,
     onNewGame,
     onResign,
+    canUndo,
+    onUndo,
     onToggleSound,
     onFlipBoard,
     onCopyPgn,
@@ -57,6 +61,12 @@ export default React.memo(function GameControls({
                 <button className="btn btn-icon" onClick={onNewGame} title="New Game" aria-label="New Game">
                     <Plus size={18} />
                 </button>
+
+                {canUndo && onUndo && (
+                    <button className="btn btn-icon" onClick={onUndo} title="Undo Move" aria-label="Undo Move">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+                    </button>
+                )}
 
                 {canResign && gameActive && (
                     <button className="btn btn-icon" onClick={onResign} title="Resign" aria-label="Resign" style={{ color: 'var(--accent-red)' }}>

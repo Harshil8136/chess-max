@@ -107,9 +107,23 @@ export default React.memo(function EvaluationGraph({
 
     const handleClick = () => {
         if (hoverIndex !== null) {
-            onGoToMove(hoverIndex - 1);
+            onGoToMove(Math.max(-1, hoverIndex - 1));
         }
     };
+
+    // Find major momentum shifts/blunders (eval swing > 2.0)
+    const blunderLines = useMemo(() => {
+        const blunders: number[] = [];
+        for (let i = 1; i <= historyLength; i++) {
+            const current = analysisCache[i]?.evaluation ?? (analysisCache[i]?.mate ? (analysisCache[i]!.mate! > 0 ? 10 : -10) : 0);
+            const prev = analysisCache[i - 1]?.evaluation ?? (analysisCache[i - 1]?.mate ? (analysisCache[i - 1]!.mate! > 0 ? 10 : -10) : 0);
+            
+            if (Math.abs(current - prev) >= 2.0) {
+                blunders.push(i);
+            }
+        }
+        return blunders;
+    }, [analysisCache, historyLength]);
 
     // We add +1 to currentIndex to map from historyIndex (-1 to N-1) to our 0 to N array
     const displayIndex = hoverIndex !== null ? hoverIndex : Math.max(0, Math.min(numPoints - 1, currentIndex + 1));
@@ -131,11 +145,11 @@ export default React.memo(function EvaluationGraph({
             )}
 
             <div 
-                className={`${styles.graphWrapper} ${compact ? styles.compactGraph : ''}`} 
+                className={`${styles.graphWrapper} ${compact ? styles.compactGraph : ''} cursor-pointer group`} 
                 ref={containerRef}
-                onMouseMove={!compact ? handleMouseMove : undefined}
-                onMouseLeave={!compact ? () => setHoverIndex(null) : undefined}
-                onClick={!compact ? handleClick : undefined}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={() => setHoverIndex(null)}
+                onClick={handleClick}
             >
                 {!isAnalysisComplete && !compact && (
                     <div className={styles.loadingOverlay}>
@@ -156,9 +170,35 @@ export default React.memo(function EvaluationGraph({
                     <line x1="0" y1={midY} x2={width} y2={midY} className={styles.zeroLine} />
                     
                     {/* Areas */}
-                    <path d={areaDataWhite} className={styles.areaWhite} />
-                    <path d={areaDataBlack} className={styles.areaBlack} />
+                    <path d={areaDataWhite} className={styles.areaWhite} stroke="none" fill="url(#whiteGlow)" />
+                    <path d={areaDataBlack} className={styles.areaBlack} stroke="none" fill="url(#blackGlow)" />
                     
+                    <defs>
+                        <linearGradient id="whiteGlow" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="var(--accent-green)" stopOpacity="0.4" />
+                            <stop offset="100%" stopColor="var(--accent-green)" stopOpacity="0.0" />
+                        </linearGradient>
+                        <linearGradient id="blackGlow" x1="0" y1="1" x2="0" y2="0">
+                            <stop offset="0%" stopColor="var(--accent-red)" stopOpacity="0.4" />
+                            <stop offset="100%" stopColor="var(--accent-red)" stopOpacity="0.0" />
+                        </linearGradient>
+                    </defs>
+
+                    {/* Blunder Indicators */}
+                    {blunderLines.map(moveIndex => (
+                        <line 
+                            key={`blunder-${moveIndex}`}
+                            x1={getX(moveIndex)}
+                            y1="0"
+                            x2={getX(moveIndex)}
+                            y2={height}
+                            stroke="var(--accent-red)"
+                            strokeWidth="1"
+                            strokeDasharray="4 4"
+                            opacity="0.5"
+                        />
+                    ))}
+
                     {/* Main path */}
                     <motion.path 
                         d={pathData} 

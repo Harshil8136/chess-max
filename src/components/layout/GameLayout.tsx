@@ -16,6 +16,8 @@ import { Home } from 'lucide-react'; // Added for floating mobile home button
 import GameBoard from '@/components/GameBoard/GameBoard';
 import EvalBar from '@/components/EvalBar/EvalBar';
 import PlayerBar from '@/components/PlayerBar/PlayerBar';
+import GameControls from '@/components/GameControls/GameControls';
+import AnalysisLoadingOverlay from '@/components/AnalysisLoadingOverlay/AnalysisLoadingOverlay';
 import NewGameDialog from '@/components/NewGameDialog/NewGameDialog';
 import GameOverModal from '@/components/GameOverModal/GameOverModal';
 import SettingsModal from '@/components/SettingsModal/SettingsModal';
@@ -44,10 +46,14 @@ export default function GameLayout() {
         timeControl,
         boardFlipped,
         appState,
+        isAnalysisComplete,
+        analysisProgress,
         setBoardFlipped,
         startGame: handleStartGame,
         rematch: handleRematch,
         handleReview,
+        handleUndo,
+        canUndo,
         setAppState,
         settingsData,
         analysis,
@@ -433,6 +439,12 @@ export default function GameLayout() {
                                 boardMatrix={boardMatrix}
                                 settings={settingsData.settings}
                             />
+
+                            {/* Analysis Loading Overlay — shown over the board while analysis is running */}
+                            <AnalysisLoadingOverlay
+                                isAnalyzing={appState === 'review' && !isAnalysisComplete}
+                                progress={analysisProgress}
+                            />
                         </div>
 
                         {/* Bottom Player Bar */}
@@ -452,6 +464,27 @@ export default function GameLayout() {
                                 formatTime={clock.formatTime}
                             />
                         </div>
+                    </div>
+
+                    {/* Game Controls (Undo, Resign, Flip, Sound, etc.) - Below Board on Mobile, hidden on Desktop where Sidebar has controls */}
+                    <div className="lg:hidden mt-2 w-full max-w-[min(85vw,65dvh)] max-sm:max-w-[min(100vw-16px,100dvh-200px)]">
+                        <GameControls
+                            gameActive={gameStatus === 'playing'}
+                            canResign={gameStatus === 'playing' && history.length > 0}
+                            soundEnabled={settingsData.settings.soundEnabled}
+                            onNewGame={() => setShowNewGameDialog(true)}
+                            onResign={() => chessGame.resign()}
+                            canUndo={canUndo}
+                            onUndo={handleUndo}
+                            onToggleSound={() => settingsData.updateSetting('soundEnabled', !settingsData.settings.soundEnabled)}
+                            onFlipBoard={() => setBoardFlipped(f => !f)}
+                            onCopyPgn={() => navigator.clipboard.writeText(chessGame.getPgn())}
+                            onCopyFen={() => navigator.clipboard.writeText(fen)}
+                            onOpenImport={() => setShowImporter(true)}
+                            isReviewMode={appState === 'review'}
+                            onExitReview={() => setAppState('playing')}
+                            onOpenSettings={() => setShowSettings(true)}
+                        />
                     </div>
 
                     {/* Side Panel (Consumes Context automatically) */}

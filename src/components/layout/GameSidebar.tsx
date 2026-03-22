@@ -2,8 +2,11 @@ import { useMemo, useCallback, useState } from 'react';
 import { Plus, Settings, Archive, BookOpen, Share2, Info, Activity, Target, Home } from 'lucide-react';
 import MoveHistory from '@/components/MoveHistory/MoveHistory';
 import InsightPanel from '@/components/InsightPanel/InsightPanel';
+import GameReportCard from '@/components/GameReportCard/GameReportCard';
 import EvaluationGraph from '@/components/EvaluationGraph/EvaluationGraph';
 import ReviewStats from '@/components/ReviewStats/ReviewStats';
+import PositionalProfiler from '@/components/PositionalProfiler/PositionalProfiler';
+import WinProbabilityBar from '@/components/WinProbabilityBar/WinProbabilityBar';
 import { useGame } from '@/contexts/GameContext';
 import { Chess } from 'chess.js';
 
@@ -126,9 +129,37 @@ function MatchRow({ label, value, className = '' }: { label: string; value: stri
     );
 }
 
-function MatchDetailsPanel({ chessGame }: { chessGame: ReturnType<typeof useGame>['chessGame'] }) {
+function MatchDetailsPanel({ 
+    chessGame,
+    stockfish,
+    analysis 
+}: { 
+    chessGame: ReturnType<typeof useGame>['chessGame'];
+    stockfish: ReturnType<typeof useGame>['stockfish'];
+    analysis: ReturnType<typeof useGame>['analysis'];
+}) {
+    // Extract evaluation history from analysis cache up to the current historyIndex
+    const evaluationHistory = useMemo(() => {
+        const hist: { cp: number | null, mate: number | null }[] = [];
+        for (let i = 0; i <= chessGame.historyIndex; i++) {
+            const data = analysis.cache[i];
+            hist.push({
+                cp: data?.evaluation ?? null,
+                mate: data?.mate ?? null
+            });
+        }
+        return hist;
+    }, [analysis.cache, chessGame.historyIndex]);
+
     return (
         <div className="flex flex-col gap-4 mt-2">
+            {/* Live Expected Score / Win Probability */}
+            <WinProbabilityBar 
+                stockfishEval={stockfish.evaluation ?? null}
+                stockfishMate={stockfish.mate ?? null}
+                evaluationHistory={evaluationHistory}
+            />
+
             <div className="p-4 bg-gradient-to-b from-[#2a2826] to-[#22201e] border border-[#3b3834] shadow-md rounded-lg">
                 <div className="flex items-center gap-2.5 mb-4 pb-3 border-b border-[#3b3834] shadow-[0_1px_0_rgba(255,255,255,0.02)]">
                     <div className="w-8 h-8 rounded-lg bg-[#312e2b] border border-[#3b3834] shadow-inner flex items-center justify-center">
@@ -152,9 +183,8 @@ function MatchDetailsPanel({ chessGame }: { chessGame: ReturnType<typeof useGame
                     )}
                 </dl>
             </div>
-            <div className="p-4 border border-dashed border-[#3b3834] rounded-lg text-center text-[#989795]">
-                <p className="text-sm">Finish the game and run a Game Review to unlock deep engine insights.</p>
-            </div>
+            {/* The Live Positional Profiler replaces the simple finish game placeholder */}
+            <PositionalProfiler fen={chessGame.fen} />
         </div>
     );
 }
@@ -452,6 +482,13 @@ export default function GameSidebar({
                                     />
                                 </section>
 
+                                {/* Comparative Positional Profiler */}
+                                <PositionalProfiler
+                                    fen={chessGame.fen}
+                                    prevFen={chessGame.history[chessGame.historyIndex]?.before}
+                                    isReviewMode={true}
+                                />
+
                                 {/* Accuracy + Share (only once analysis is done) */}
                                 {isAnalysisComplete && (
                                     <section className="p-4 bg-gradient-to-b from-[#2a2826] to-[#22201e] border border-[#3b3834] shadow-md rounded-lg active:scale-[0.99] transition-transform origin-center">
@@ -459,8 +496,14 @@ export default function GameSidebar({
                                             <div className="w-8 h-8 rounded-lg bg-[#312e2b] border border-[#3b3834] shadow-inner flex items-center justify-center">
                                                 <Target size={16} className="text-gray-300" />
                                             </div>
-                                            <h3 className="text-white text-base font-bold shadow-black/50 drop-shadow-sm">Accuracy</h3>
+                                            <h3 className="text-white text-base font-bold shadow-black/50 drop-shadow-sm">Match Performance</h3>
                                         </div>
+                                        <GameReportCard 
+                                            stats={analysis.getAccuracyStats(chessGame.history)}
+                                            analysisCache={analysis.cache}
+                                            historyLength={chessGame.history.length}
+                                        />
+                                        <h4 className="text-white/80 text-sm font-bold mt-4 mb-2 uppercase tracking-wide">Move Distribution</h4>
                                         <ReviewStats stats={analysis.getAccuracyStats(chessGame.history)} />
                                         <div className="mt-4 pt-4 border-t border-[#3b3834]">
                                             <button
@@ -487,7 +530,7 @@ export default function GameSidebar({
                                 )}
                             </div>
                         ) : (
-                            <MatchDetailsPanel chessGame={chessGame} />
+                            <MatchDetailsPanel chessGame={chessGame} stockfish={stockfish} analysis={analysis} />
                         )}
                     </div>
                 )}

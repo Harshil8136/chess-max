@@ -31,6 +31,32 @@ export default React.memo(function InsightPanel({ analysis, isReviewMode, turn, 
     let themeClass = styles.themeDefault;
     let Icon = Target;
     
+    // Win Probability Calculation
+    const calculateWinProb = (evalScore: number | null, mateScore: number | null): number => {
+        if (mateScore !== null) return mateScore > 0 ? 100 : 0;
+        if (evalScore !== null) {
+            const cp = evalScore * 100;
+            return 50 + 50 * (2 / (1 + Math.exp(-0.00368208 * cp)) - 1);
+        }
+        return 50;
+    };
+
+    const currentProb = calculateWinProb(evaluation, mate);
+    let probLoss: number | null = null;
+
+    if (analysis.delta !== null && evaluation !== null && mate === null) {
+        // Reverse engineer the previous eval
+        const rawDelta = turn === 'w' ? analysis.delta : -analysis.delta;
+        const prevEval = evaluation - rawDelta;
+        const prevProb = calculateWinProb(prevEval, null);
+        
+        // Probability loss for the player who just moved
+        const actualLoss = turn === 'w' ? (prevProb - currentProb) : (currentProb - prevProb);
+        if (actualLoss > 2) {
+            probLoss = actualLoss;
+        }
+    }
+
     const evalText = mate !== null
         ? `M${Math.abs(mate)}`
         : `${evaluation! > 0 ? '+' : ''}${evaluation?.toFixed(1)}`;
@@ -38,61 +64,61 @@ export default React.memo(function InsightPanel({ analysis, isReviewMode, turn, 
     switch (classification) {
         case 'brilliant':
             title = 'Brilliant';
-            description = `A masterpiece! You found a spectacular move.`;
+            description = `A masterpiece! You found a spectacular move that sacrifices material for a greater positional or tactical advantage.`;
             themeClass = styles.themeBrilliant;
             Icon = Sparkles;
             break;
         case 'book':
             title = 'Book Move';
-            description = `Standard opening theory.`;
+            description = `Standard opening theory. This has been played by masters to reach a solid middlegame.`;
             themeClass = styles.themeBook;
             Icon = BookOpen;
             break;
         case 'forced':
             title = 'Forced Move';
-            description = `The only legal or logical move in this position.`;
+            description = `The only legal or logical move in this position to avoid immediate disaster.`;
             themeClass = styles.themeForced;
             Icon = ArrowRightCircle;
             break;
         case 'blunder':
             title = 'Blunder';
-            description = `A critical mistake. You lost your advantage. The engine prefers ${bestMove}.`;
+            description = `A critical mistake. You just lost significant advantage or material. The engine strongly prefers ${bestMove}.`;
             themeClass = styles.themeBlunder;
             Icon = XOctagon;
             break;
         case 'mistake':
             title = 'Mistake';
-            description = `This move worsened your position. A better continuation was ${bestMove}.`;
+            description = `This move worsened your position considerably. A better continuation was ${bestMove} to maintain the tension.`;
             themeClass = styles.themeMistake;
             Icon = AlertTriangle;
             break;
         case 'inaccuracy':
             title = 'Inaccuracy';
-            description = `Slightly inferior. Stockfish suggests ${bestMove} here.`;
+            description = `Slightly inferior. You missed a more forcing continuation. Stockfish suggests ${bestMove} here.`;
             themeClass = styles.themeInaccuracy;
             Icon = HelpCircle;
             break;
         case 'best':
             title = 'Best Move';
-            description = `You found the top engine move!`;
+            description = `You found the top engine move! This puts maximum pressure on your opponent.`;
             themeClass = styles.themeBest;
             Icon = Star;
             break;
         case 'excellent':
             title = 'Excellent';
-            description = `A very strong continuation.`;
+            description = `A very strong continuation that develops your pieces while maintaining control.`;
             themeClass = styles.themeExcellent;
             Icon = ThumbsUp;
             break;
         case 'good':
             title = 'Good Move';
-            description = `A solid move that maintains the position.`;
+            description = `A solid move that maintains the position without taking unnecessary risks.`;
             themeClass = styles.themeGood;
             Icon = Check;
             break;
         default:
             title = 'Position Evaluated';
-            description = `The best engine continuation is ${bestMove}.`;
+            description = `The best engine continuation is ${bestMove}. Keep standard principles in mind.`;
             break;
     }
 
@@ -104,7 +130,14 @@ export default React.memo(function InsightPanel({ analysis, isReviewMode, turn, 
                         <div className={styles.iconWrapper}><Icon size={16} className={styles.icon} strokeWidth={2.5}/></div>
                         <span className={styles.title}>{title}</span>
                     </div>
-                    <span className={styles.evalBadge}>{evalText}</span>
+                    <div className="flex items-center gap-2">
+                        {probLoss !== null && (classification === 'blunder' || classification === 'mistake' || classification === 'inaccuracy') && (
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded text-[var(--accent-red)] bg-[var(--accent-red)]/20 whitespace-nowrap border border-[var(--accent-red)]/30">
+                                -{probLoss.toFixed(1)}% Win Chance
+                            </span>
+                        )}
+                        <span className={styles.evalBadge}>{evalText}</span>
+                    </div>
                 </div>
                 
                 <p className={styles.description}>

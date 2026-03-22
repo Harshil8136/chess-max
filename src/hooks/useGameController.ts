@@ -33,6 +33,8 @@ export interface UseGameControllerReturn {
     startGame: (settings: { gameMode: GameMode; playerColor: PlayerColor; eloLevel: EloLevel; timeControl: TimeControl }) => void;
     rematch: () => void;
     handleReview: () => void;
+    handleUndo: () => void;
+    canUndo: boolean;
 
     // Reacting properties that are forwarded
     pendingGameRef: React.MutableRefObject<any>;
@@ -273,17 +275,43 @@ export function useGameController(): UseGameControllerReturn {
     );
 
     const rematch = useCallback(() => {
-        lastBestMoveRef.current = null;
-        chessGame.newGame(chessGame.playerColor);
+        const newColor = chessGame.playerColor === 'w' ? 'b' : 'w';
         if (timeControl.initial > 0) {
             clock.resetClock(timeControl);
-            clock.startClock('w');
         }
-    }, [chessGame, timeControl, clock]);
+        batchAnalysisStartedRef.current = false;
+        setIsAnalysisComplete(false);
+        setAnalysisProgress(0);
+        analysis.clearAnalysis();
+        chessGame.newGame(newColor);
+    }, [chessGame, timeControl, clock, analysis]);
 
     const handleReview = useCallback(() => {
         setAppState('review');
     }, []);
+
+    const canUndo = chessGame.history.length > 0 && appState === 'playing';
+
+    const handleUndo = useCallback(() => {
+        if (!canUndo) return;
+
+        if (gameMode === 'pass_and_play') {
+            chessGame.undoMove(1);
+        } else if (gameMode === 'vs_computer') {
+            if (chessGame.isPlayerTurn) {
+                // Engine already moved, so we undo engine's move AND player's move
+                // However if history only has length 1 (engine moved first), we just undo 1
+                const timesToUndo = chessGame.history.length === 1 ? 1 : 2;
+                chessGame.undoMove(timesToUndo);
+            } else {
+                // Engine is currently thinking, so we undo player's move
+                stockfish.stopEngine();
+                if (engineMoveTimeoutRef.current) clearTimeout(engineMoveTimeoutRef.current);
+                lastBestMoveRef.current = null;
+                chessGame.undoMove(1);
+            }
+        }
+    }, [canUndo, gameMode, chessGame, stockfish]);
 
     // Wire auto-save/resume functionality
     useAutoSave({
@@ -324,6 +352,8 @@ export function useGameController(): UseGameControllerReturn {
         startGame,
         rematch,
         handleReview,
+        handleUndo,
+        canUndo,
         pendingGameRef
     };
 }

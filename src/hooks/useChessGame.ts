@@ -29,6 +29,7 @@ export interface UseChessGameReturn {
     setPosition: (fen: string) => void;
     restoreGame: (savedFen: string, savedColor: PlayerColor, savedPgn?: string) => void;
     newGame: (playerColor: PlayerColor) => void;
+    undoMove: (times?: number) => void;
     
     // Evaluation persistence
     historySnapshots: {fen: string; inCheck: boolean; turn: 'w' | 'b'; evaluation?: number | null; mate?: number | null}[];
@@ -371,6 +372,51 @@ export function useChessGame(initialColor: PlayerColor = 'w'): UseChessGameRetur
         soundManager.play('gameEnd');
     }, []);
 
+    const undoMove = useCallback((times: number = 1) => {
+        const chess = gameRef.current;
+        let undone = false;
+        
+        for (let i = 0; i < times; i++) {
+            if (chess.history().length > 0) {
+                chess.undo();
+                undone = true;
+            } else {
+                break;
+            }
+        }
+
+        if (undone) {
+            const newFen = chess.fen();
+            const newTurn = chess.turn();
+            const newInCheck = chess.isCheck();
+            const newHistory = chess.history({ verbose: true });
+            
+            setFen(newFen);
+            setTurn(newTurn);
+            setInCheck(newInCheck);
+            setLegalMoves(chess.moves());
+            
+            setHistory(newHistory);
+            
+            // Truncate snapshots to match new length
+            setHistorySnapshots(prev => prev.slice(0, newHistory.length));
+            setHistoryIndex(newHistory.length - 1);
+            
+            if (newHistory.length > 0) {
+                const lastIdx = newHistory.length - 1;
+                setLastMove({ from: newHistory[lastIdx].from, to: newHistory[lastIdx].to });
+            } else {
+                setLastMove(null);
+            }
+            
+            // Revert game over if needed
+            if (gameStatus !== 'playing' && gameStatus !== 'idle') {
+                setGameStatus('playing');
+                setGameResult(null);
+            }
+        }
+    }, [gameStatus]);
+
     const goToMove = useCallback(
         (index: number) => {
             if (index < -1 || index >= history.length) return;
@@ -428,6 +474,7 @@ export function useChessGame(initialColor: PlayerColor = 'w'): UseChessGameRetur
         setPosition,
         restoreGame,
         newGame,
+        undoMove,
         resign,
         setGameOver,
         goToMove,

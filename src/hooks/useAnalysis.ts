@@ -17,6 +17,7 @@ export interface AccuracyStats {
     blackAccuracy: number;
     whiteCounts: Record<MoveClassification, number>;
     blackCounts: Record<MoveClassification, number>;
+    largestEvalSwingIndex?: number;
 }
 
 const calculateWinProb = (evaluation: number | null, mate: number | null): number => {
@@ -141,6 +142,9 @@ export function useAnalysis() {
             brilliant: 0, best: 0, excellent: 0, good: 0, inaccuracy: 0, mistake: 0, blunder: 0, book: 0, forced: 0
         };
 
+        let maxSwing = 0;
+        let largestEvalSwingIndex = -1;
+
         for (let i = 0; i < historyTokens.length; i++) {
             const color = historyTokens[i].color;
             const moveData = getMoveClassification(i, color);
@@ -178,6 +182,11 @@ export function useAnalysis() {
                         blackMoves++;
                     }
                 }
+
+                if (moveData.delta !== null && Math.abs(moveData.delta) > maxSwing) {
+                    maxSwing = Math.abs(moveData.delta);
+                    largestEvalSwingIndex = i;
+                }
             }
         }
 
@@ -185,7 +194,8 @@ export function useAnalysis() {
             whiteAccuracy: whiteMoves > 0 ? whiteAccSum / whiteMoves : 0,
             blackAccuracy: blackMoves > 0 ? blackAccSum / blackMoves : 0,
             whiteCounts,
-            blackCounts
+            blackCounts,
+            largestEvalSwingIndex
         };
     }, [cache, getMoveClassification]);
 

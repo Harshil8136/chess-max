@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState, useEffect, useCallback } from 'react';
-import { motion, PanInfo, useAnimation } from 'framer-motion';
+import { motion, PanInfo } from 'framer-motion';
 import { Square } from 'chess.js';
 import { SettingsState } from '@/hooks/useSettings';
 import { useArrowDrawing } from '@/hooks/useArrowDrawing';
@@ -138,27 +138,6 @@ const AnimatedPiece = React.memo(function AnimatedPiece({
     isDragging, onDragStart, onDragEnd,
     initialOffsetX, initialOffsetY, shouldAnimate,
 }: AnimatedPieceProps) {
-    const controls = useAnimation();
-    const hasAnimated = useRef(false);
-
-    useEffect(() => {
-        if (shouldAnimate && !hasAnimated.current && (initialOffsetX !== 0 || initialOffsetY !== 0)) {
-            hasAnimated.current = true;
-            // Start at offset, animate to 0
-            controls.set({ x: initialOffsetX, y: initialOffsetY });
-            controls.start({
-                x: 0,
-                y: 0,
-                transition: {
-                    type: 'spring',
-                    stiffness: 320,
-                    damping: 28,
-                    mass: 0.6,
-                },
-            });
-        }
-    }, [shouldAnimate, initialOffsetX, initialOffsetY, controls]);
-
     return (
         <div
             style={{
@@ -184,7 +163,14 @@ const AnimatedPiece = React.memo(function AnimatedPiece({
             )}
 
             <motion.div
-                animate={controls}
+                initial={shouldAnimate ? { x: initialOffsetX, y: initialOffsetY } : { x: 0, y: 0 }}
+                animate={{ x: 0, y: 0 }}
+                transition={{
+                    type: 'spring',
+                    stiffness: 350,
+                    damping: 30, // Snappy but not rubber-bandy
+                    mass: 0.8,
+                }}
                 className={`${styles.pieceContainer} ${isDragging ? styles.pieceDragging : ''}`}
                 drag={allowInteraction}
                 dragSnapToOrigin
@@ -240,6 +226,7 @@ export default React.memo(function GameBoard({
 
     // Store previous board for diff-based slide animation
     const prevBoardRef = useRef<any[][] | null>(null);
+    const lastDraggedMoveRef = useRef<{ from: string, to: string, time: number } | null>(null);
     const [animatingMoves, setAnimatingMoves] = useState<PieceMove[]>([]);
 
     // Right-click arrows & highlights
@@ -256,8 +243,28 @@ export default React.memo(function GameBoard({
     useEffect(() => {
         if (prevBoardRef.current && boardMatrix) {
             const moves = diffBoards(prevBoardRef.current, boardMatrix, boardFlipped);
-            if (moves.length > 0) {
-                setAnimatingMoves(moves);
+            
+            // Filter out the move that was just dragged to prevent rubber banding
+            const filteredMoves = moves.filter(m => {
+                if (!lastDraggedMoveRef.current) return true;
+                if (Date.now() - lastDraggedMoveRef.current.time > 800) return true;
+
+                const fromFile = boardFlipped ? 7 - m.fromC : m.fromC;
+                const fromRank = boardFlipped ? 7 - m.fromR : m.fromR;
+                const toFile = boardFlipped ? 7 - m.toC : m.toC;
+                const toRank = boardFlipped ? 7 - m.toR : m.toR;
+                
+                const fromSq = `${FILES[fromFile]}${RANKS[fromRank]}`;
+                const toSq = `${FILES[toFile]}${RANKS[toRank]}`;
+
+                if (fromSq === lastDraggedMoveRef.current.from && toSq === lastDraggedMoveRef.current.to) {
+                    return false; // Skip animating this one because the user just dragged it
+                }
+                return true;
+            });
+
+            if (filteredMoves.length > 0) {
+                setAnimatingMoves(filteredMoves);
                 // Clear animation state after the spring settles
                 const timer = setTimeout(() => setAnimatingMoves([]), 400);
                 return () => clearTimeout(timer);
@@ -327,6 +334,12 @@ export default React.memo(function GameBoard({
             }
 
             clearArrows();
+            lastDraggedMoveRef.current = {
+                from: sourceSquare,
+                to: targetSquareName,
+                time: Date.now()
+            };
+
             onPieceDrop({
                 piece: { isSparePiece: false, position: sourceSquare, pieceType: pieceInfo.color + pieceInfo.type },
                 sourceSquare,

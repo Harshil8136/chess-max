@@ -367,7 +367,7 @@ export default function GameLayout() {
             </button>
 
             {/* pt-16 on mobile gives space for the floating header, perfectly centered on desktop */}
-            <main className="flex-1 flex justify-center items-center p-4 pt-16 lg:p-4 gap-4 md:gap-8 overflow-y-auto overflow-x-hidden relative z-10 max-lg:flex-col max-lg:items-center max-lg:max-h-full">
+            <main className="flex-1 flex justify-center items-center p-4 pt-16 lg:p-4 gap-4 md:gap-8 overflow-y-auto overflow-x-hidden [scrollbar-gutter:stable] relative z-10 max-lg:flex-col max-lg:items-center max-lg:max-h-full">
                 <motion.div 
                     className="flex gap-2 md:gap-3 items-stretch justify-center w-full max-w-[1240px] shrink-0 max-lg:w-full h-fit flex-1"
                     initial={{ opacity: 0, y: 20 }}
@@ -386,7 +386,7 @@ export default function GameLayout() {
                     )}
 
                     {/* Arena Container */}
-                    <div className="flex flex-col w-[min(80dvh,850px)] max-w-[calc(100vw-400px)] max-lg:max-w-none transition-all max-lg:w-[min(85vw,65dvh)] max-sm:w-[min(100vw-16px,100dvh-200px)] relative rounded-2xl overflow-hidden shadow-[var(--shadow-lg,0_8px_32px_rgba(0,0,0,0.5))] border border-[var(--glass-border)] [backdrop-filter:blur(var(--glass-blur,24px))] [-webkit-backdrop-filter:blur(var(--glass-blur,24px))] bg-[var(--glass-bg)] ring-1 ring-white/5 relative group">
+                    <div className="flex flex-col w-[min(80dvh,850px)] max-w-[calc(100vw-400px)] max-lg:max-w-none max-lg:w-[min(85vw,65dvh)] max-sm:w-[min(100vw-16px,100dvh-200px)] relative rounded-2xl overflow-hidden shadow-[var(--shadow-lg,0_8px_32px_rgba(0,0,0,0.5))] border border-[var(--glass-border)] [backdrop-filter:blur(var(--glass-blur,24px))] [-webkit-backdrop-filter:blur(var(--glass-blur,24px))] bg-[var(--glass-bg)] ring-1 ring-white/5 relative group">
                         {/* Subtle theme glow for Arena */}
                         <div className="pointer-events-none absolute inset-0 rounded-2xl shadow-[var(--shadow-glow-green,none)] opacity-50 transition-opacity duration-700 group-hover:opacity-100 z-10" />
                         {/* Top Player Bar */}

@@ -77,3 +77,19 @@ public/swe-worker-*.js.map
 # Project-specific
 # ========================
 AG_INSTRUCTIONS.md
+
+# ========================
+# AI Agent Meta Files
+# ========================
+.agent/
+.agents/
+.claude/
+.windsurf/
+skills-lock.json
+
+# ========================
+# Local Testing & Tailwind Builds
+# ========================
+out-tw.css
+test-tw.css
+test.html
